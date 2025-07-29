@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>eKYC SDK - Document Verification</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/image-styles.css">
 </head>
 <body>
     <!-- Header with Language Selector -->
@@ -25,25 +26,33 @@
             
             <div class="doc-cards-container">
                 <div class="doc-card" data-doc-type="id-card">
-                    <div class="doc-icon">📄</div>
+                    <div class="doc-icon">
+                        <img src="https://vaytieudung.github.io/shinhanbank/lib/icon_id.png" alt="Biểu tượng thẻ căn cước" />
+                    </div>
                     <span id="idCardText">Chứng minh thư, Thẻ căn cước</span>
                     <div class="arrow">›</div>
                 </div>
                 
                 <div class="doc-card" data-doc-type="passport">
-                    <div class="doc-icon">📘</div>
+                    <div class="doc-icon">
+                        <img src="https://vaytieudung.github.io/shinhanbank/lib/icon_passport.png" alt="Biểu tượng Hộ chiếu" />
+                    </div>
                     <span id="passportText">Hộ chiếu</span>
                     <div class="arrow">›</div>
                 </div>
                 
                 <div class="doc-card" data-doc-type="license">
-                    <div class="doc-icon">🪪</div>
+                    <div class="doc-icon">
+                        <img src="https://vaytieudung.github.io/shinhanbank/lib/icon_driver_license.png" alt="Biểu tượng Bằng lái xe" />
+                    </div>
                     <span id="licenseText">Bằng lái xe</span>
                     <div class="arrow">›</div>
                 </div>
                 
                 <div class="doc-card" data-doc-type="other">
-                    <div class="doc-icon">📋</div>
+                    <div class="doc-icon">
+                        <img src="https://vaytieudung.github.io/shinhanbank/lib/icon_other.png" alt="Biểu tượng Giấy tờ khác" />
+                    </div>
                     <span id="otherText">Giấy tờ khác</span>
                     <div class="arrow">›</div>
                 </div>
@@ -61,7 +70,7 @@
             <div class="instruction-steps">
                 <div class="step">
                     <div class="step-image">
-                        <div class="id-card-front">📄</div>
+                        <img src="https://vaytieudung.github.io/shinhanbank/lib/cmt_mt.png" alt="Ảnh mặt trước hợp lệ" class="step-img" />
                         <div class="frame"></div>
                     </div>
                     <p id="step1Text">Bước 1: Chụp mặt trước</p>
@@ -69,7 +78,7 @@
                 
                 <div class="step">
                     <div class="step-image">
-                        <div class="id-card-back">📄</div>
+                        <img src="https://vaytieudung.github.io/shinhanbank/lib/cmt_ms.png" alt="Ảnh mặt sau hợp lệ" class="step-img" />
                         <div class="frame"></div>
                     </div>
                     <p id="step2Text">Bước 2: Chụp mặt sau</p>
@@ -85,15 +94,21 @@
             
             <div class="bad-examples">
                 <div class="bad-example">
-                    <div class="bad-image blurry">📄</div>
+                    <div class="bad-image blurry">
+                        <img src="https://vaytieudung.github.io/shinhanbank/lib/mo.png" alt="Ảnh bị mờ" class="bad-img" />
+                    </div>
                     <p id="badExample1">Không chụp quá mờ</p>
                 </div>
                 <div class="bad-example">
-                    <div class="bad-image tilted">📄</div>
+                    <div class="bad-image tilted">
+                        <img src="https://vaytieudung.github.io/shinhanbank/lib/matgoc.png" alt="Ảnh bị che góc" class="bad-img" />
+                    </div>
                     <p id="badExample2">Không chụp mất góc</p>
                 </div>
                 <div class="bad-example">
-                    <div class="bad-image glare">📄</div>
+                    <div class="bad-image glare">
+                        <img src="https://vaytieudung.github.io/shinhanbank/lib/loasang.png" alt="Ảnh bị lóa" class="bad-img" />
+                    </div>
                     <p id="badExample3">Không chụp lóa sáng</p>
                 </div>
             </div>
@@ -162,6 +177,18 @@
         
         <div class="face-instructions">
             <p id="faceInstructions">Đặt khuôn mặt vào khung hình oval và giữ yên</p>
+            <div class="face-guide-video">
+                <video 
+                    src="https://sample-videos.com/zip/10/mp4/SampleVideo_360x240_1mb.mp4" 
+                    poster="https://via.placeholder.com/320x240/00d4aa/ffffff?text=Face+Guide+Video"
+                    controls 
+                    muted 
+                    preload="metadata"
+                    class="guide-video">
+                    <p>Trình duyệt của bạn không hỗ trợ video. <a href="https://sample-videos.com/zip/10/mp4/SampleVideo_360x240_1mb.mp4">Tải video hướng dẫn</a></p>
+                </video>
+                <p class="video-caption">Video hướng dẫn xác thực khuôn mặt</p>
+            </div>
         </div>
     </section>
 
