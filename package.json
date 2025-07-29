@@ -1,0 +1,42 @@
+{
+  "name": "ekyc-sdk",
+  "version": "1.0.0",
+  "description": "eKYC SDK - Document Verification System with AI Face Recognition",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "serve": "npx serve .",
+    "dev": "python3 -m http.server 8000",
+    "build": "echo 'No build process needed for static site'",
+    "deploy": "gh-pages -d ."
+  },
+  "keywords": [
+    "ekyc",
+    "document-verification",
+    "face-recognition",
+    "ai",
+    "javascript",
+    "html5",
+    "css3",
+    "face-api",
+    "identity-verification",
+    "kyc"
+  ],
+  "author": "Your Name <your.email@example.com>",
+  "license": "MIT",
+  "homepage": "https://yourusername.github.io/ekyc-sdk",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/ekyc-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/ekyc-sdk/issues"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.0.0",
+    "serve": "^14.2.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
