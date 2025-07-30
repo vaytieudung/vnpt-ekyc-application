@@ -259,7 +259,7 @@ body {
 }
 
 .instructions-text li:before {
-    content: "•";
+    content: "â€¢";
     color: #00d4aa;
     font-weight: bold;
     position: absolute;
@@ -293,7 +293,7 @@ body {
 }
 
 .bad-image:after {
-    content: "×";
+    content: "Ă—";
     position: absolute;
     top: -8px;
     right: -8px;
