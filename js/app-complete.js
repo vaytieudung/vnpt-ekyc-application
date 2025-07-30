@@ -29,48 +29,48 @@ class EKYCApp {
         // Language translations
         this.translations = {
             vi: {
-                mainTitle: 'XĂ¡c thá»±c giáº¥y tá»',
-                mainSubtitle: 'Chá»n giáº¥y tá» báº¡n muá»‘n xĂ¡c thá»±c',
-                idCardText: 'Chá»©ng minh thÆ°, Tháº» cÄƒn cÆ°á»›c',
-                passportText: 'Há»™ chiáº¿u',
-                licenseText: 'Báº±ng lĂ¡i xe',
-                otherText: 'Giáº¥y tá» khĂ¡c',
-                modalTitle: 'HÆ°á»›ng dáº«n chá»¥p áº£nh CMT, CCCD',
-                step1Text: 'BÆ°á»›c 1: Chá»¥p máº·t trÆ°á»›c',
-                step2Text: 'BÆ°á»›c 2: Chá»¥p máº·t sau',
-                instruction1: 'ÄÆ°a giáº¥y tá» vĂ o gáº§n camera sao cho 4 gĂ³c cá»§a giáº¥y tá» trĂ¹ng vá»›i vĂ¹ng giá»›i háº¡n',
-                instruction2: 'Chá»¥p rĂµ nĂ©t vĂ  Ä‘áº§y Ä‘á»§ thĂ´ng tin trĂªn giáº¥y tá»',
-                badExample1: 'KhĂ´ng chá»¥p quĂ¡ má»',
-                badExample2: 'KhĂ´ng chá»¥p máº¥t gĂ³c',
-                badExample3: 'KhĂ´ng chá»¥p lĂ³a sĂ¡ng',
-                startBtn: 'Báº®T Äáº¦U',
-                cameraTitle: 'CHá»¤P Máº¶T TRÆ¯á»C',
-                captureBtnText: 'CHá»¤P áº¢NH',
-                uploadBtnText: 'Táº¢I áº¢NH LĂN',
-                cameraInstructions: 'Xin vui lĂ²ng Ä‘áº·t giáº¥y tá» náº±m vá»«a khung hĂ¬nh chá»¯ nháº­t, chá»¥p Ä‘á»§ Ă¡nh sĂ¡ng vĂ  rĂµ nĂ©t',
-                guideLink: 'HÆ°á»›ng dáº«n',
-                faceTitle: 'XĂC THá»°C KHUĂ”N Máº¶T',
-                faceCaptureBtnText: 'CHá»¤P áº¢NH',
-                faceInstructions: 'Äáº·t khuĂ´n máº·t vĂ o khung hĂ¬nh oval vĂ  giá»¯ yĂªn',
-                loadingText: 'Äang táº£i mĂ´ hĂ¬nh AI...',
-                progressStep: 'BÆ°á»›c',
-                faceProgressStep: 'BÆ°á»›c 3/4',
-                faceDetected: 'ÄĂ£ phĂ¡t hiá»‡n khuĂ´n máº·t',
-                faceNotDetected: 'KhĂ´ng phĂ¡t hiá»‡n khuĂ´n máº·t',
-                positionFace: 'HĂ£y Ä‘áº·t máº·t vĂ o khung oval',
-                cameraError: 'KhĂ´ng thá»ƒ truy cáº­p camera. Vui lĂ²ng kiá»ƒm tra quyá»n truy cáº­p.',
-                modelLoadError: 'KhĂ´ng thá»ƒ táº£i mĂ´ hĂ¬nh AI. Vui lĂ²ng thá»­ láº¡i.',
-                captureSuccess: 'Chá»¥p áº£nh thĂ nh cĂ´ng!',
-                processingImage: 'Äang xá»­ lĂ½ áº£nh...',
-                httpsRequired: 'YĂªu cáº§u HTTPS Ä‘á»ƒ sá»­ dá»¥ng camera. Vui lĂ²ng truy cáº­p qua HTTPS.',
-                browserNotSupported: 'TrĂ¬nh duyá»‡t khĂ´ng há»— trá»£ camera. Vui lĂ²ng sá»­ dá»¥ng trĂ¬nh duyá»‡t hiá»‡n Ä‘áº¡i.',
-                permissionDenied: 'Quyá»n truy cáº­p camera bá»‹ tá»« chá»‘i. Vui lĂ²ng cho phĂ©p truy cáº­p camera.',
-                deviceNotFound: 'KhĂ´ng tĂ¬m tháº¥y camera. Vui lĂ²ng kiá»ƒm tra thiáº¿t bá»‹.',
-                fallbackMode: 'Cháº¿ Ä‘á»™ dá»± phĂ²ng: Sá»­ dá»¥ng táº£i áº£nh lĂªn thay vĂ¬ camera.',
-                faceGuideTitle: 'HÆ°á»›ng dáº«n xĂ¡c thá»±c khuĂ´n máº·t',
-                videoCaption: 'Xem video hÆ°á»›ng dáº«n Ä‘á»ƒ biáº¿t cĂ¡ch Ä‘áº·t khuĂ´n máº·t Ä‘Ăºng cĂ¡ch',
-                skipVideoBtn: 'Bá» qua',
-                continueAfterVideoBtn: 'Tiáº¿p tá»¥c'
+                mainTitle: 'Xác thực giấy tờ',
+                mainSubtitle: 'Chọn giấy tờ bạn muốn xác thực',
+                idCardText: 'Chứng minh thư, Thẻ căn cước',
+                passportText: 'Hộ chiếu',
+                licenseText: 'Bằng lái xe',
+                otherText: 'Giấy tờ khác',
+                modalTitle: 'Hướng dẫn chụp ảnh CMT, CCCD',
+                step1Text: 'Bước 1: Chụp mặt trước',
+                step2Text: 'Bước 2: Chụp mặt sau',
+                instruction1: 'Đưa giấy tờ vào gần camera sao cho 4 góc của giấy tờ trùng với vùng giới hạn',
+                instruction2: 'Chụp rõ nét và đầy đủ thông tin trên giấy tờ',
+                badExample1: 'Không chụp quá mờ',
+                badExample2: 'Không chụp mất góc',
+                badExample3: 'Không chụp lóa sáng',
+                startBtn: 'BẮT ĐẦU',
+                cameraTitle: 'CHỤP MẶT TRƯỚC',
+                captureBtnText: 'CHỤP ẢNH',
+                uploadBtnText: 'TẢI ẢNH LÊN',
+                cameraInstructions: 'Xin vui lòng đặt giấy tờ nằm vừa khung hình chữ nhật, chụp đủ ánh sáng và rõ nét',
+                guideLink: 'Hướng dẫn',
+                faceTitle: 'XÁC THỰC KHUÔN MẶT',
+                faceCaptureBtnText: 'CHỤP ẢNH',
+                faceInstructions: 'Đặt khuôn mặt vào khung hình oval và giữ yên',
+                loadingText: 'Đang tải mô hình AI...',
+                progressStep: 'Bước',
+                faceProgressStep: 'Bước 3/4',
+                faceDetected: 'Đã phát hiện khuôn mặt',
+                faceNotDetected: 'Không phát hiện khuôn mặt',
+                positionFace: 'Hãy đặt mặt vào khung oval',
+                cameraError: 'Không thể truy cập camera. Vui lòng kiểm tra quyền truy cập.',
+                modelLoadError: 'Không thể tải mô hình AI. Vui lòng thử lại.',
+                captureSuccess: 'Chụp ảnh thành công!',
+                processingImage: 'Đang xử lý ảnh...',
+                httpsRequired: 'Yêu cầu HTTPS để sử dụng camera. Vui lòng truy cập qua HTTPS.',
+                browserNotSupported: 'Trình duyệt không hỗ trợ camera. Vui lòng sử dụng trình duyệt hiện đại.',
+                permissionDenied: 'Quyền truy cập camera bị từ chối. Vui lòng cho phép truy cập camera.',
+                deviceNotFound: 'Không tìm thấy camera. Vui lòng kiểm tra thiết bị.',
+                fallbackMode: 'Chế độ dự phòng: Sử dụng tải ảnh lên thay vì camera.',
+                faceGuideTitle: 'Hướng dẫn xác thực khuôn mặt',
+                videoCaption: 'Xem video hướng dẫn để biết cách đặt khuôn mặt đúng cách',
+                skipVideoBtn: 'Bỏ qua',
+                continueAfterVideoBtn: 'Tiếp tục'
             },
             en: {
                 mainTitle: 'Document Verification',
@@ -129,12 +129,12 @@ class EKYCApp {
         this.loadFaceDetectionModels();
     }
 
-    // 1. Kiá»ƒm tra quyá»n truy cáº­p Camera
+    // 1. Kiểm tra quyền truy cập Camera
     async checkCameraPermissions() {
         try {
             if (this.debugMode) console.log('Checking camera permissions...');
             
-            // Kiá»ƒm tra vĂ  yĂªu cáº§u quyá»n camera
+            // Kiểm tra và yêu cầu quyền camera
             const stream = await navigator.mediaDevices.getUserMedia({ 
                 video: { 
                     width: this.config.faceAuth.width,
@@ -143,7 +143,7 @@ class EKYCApp {
                 } 
             });
             
-            // Dá»«ng stream test
+            // Dừng stream test
             stream.getTracks().forEach(track => track.stop());
             
             if (this.debugMode) console.log('Camera permissions granted');
@@ -155,7 +155,7 @@ class EKYCApp {
         }
     }
 
-    // 2. Kiá»ƒm tra HTTPS
+    // 2. Kiểm tra HTTPS
     checkHTTPS() {
         const isHTTPS = location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
         
@@ -169,16 +169,16 @@ class EKYCApp {
         return true;
     }
 
-    // 3. Kiá»ƒm tra Browser Support
+    // 3. Kiểm tra Browser Support
     checkBrowserSupport() {
-        // Kiá»ƒm tra browser há»— trá»£
+        // Kiểm tra browser hỗ trợ
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
             this.showError(this.translations[this.currentLanguage].browserNotSupported);
             this.enableFallbackMode();
             return false;
         }
 
-        // Kiá»ƒm tra cĂ¡c API cáº§n thiáº¿t
+        // Kiểm tra các API cần thiết
         const requiredAPIs = [
             'getUserMedia' in navigator.mediaDevices,
             'getDisplayMedia' in navigator.mediaDevices,
@@ -197,9 +197,9 @@ class EKYCApp {
         return true;
     }
 
-    // 4. Cáº¥u hĂ¬nh SDK Ä‘Ăºng cĂ¡ch
+    // 4. Cấu hình SDK đúng cách
     configureFaceAuthSDK() {
-        // VĂ­ dá»¥ cáº¥u hĂ¬nh cÆ¡ báº£n
+        // Ví dụ cấu hình cơ bản
         const config = {
             apiUrl: 'https://api.example.com/face-auth',
             timeout: 30000,
@@ -226,16 +226,16 @@ class EKYCApp {
         return config;
     }
 
-    // 5. Kiá»ƒm tra DOM Element
+    // 5. Kiểm tra DOM Element
     checkDOMElements() {
-        // Kiá»ƒm tra element tá»“n táº¡i
+        // Kiểm tra element tồn tại
         const container = document.getElementById('faceVideoElement');
         if (!container) {
             console.error('Face auth container not found');
             return false;
         }
 
-        // Kiá»ƒm tra kĂ­ch thÆ°á»›c container
+        // Kiểm tra kích thước container
         const rect = container.getBoundingClientRect();
         if (rect.width === 0 || rect.height === 0) {
             console.error('Face auth container has no dimensions');
@@ -246,7 +246,7 @@ class EKYCApp {
         return true;
     }
 
-    // 6. Xá»­ lĂ½ lá»—i phá»• biáº¿n
+    // 6. Xử lý lỗi phổ biến
     handleFaceAuthError(error) {
         if (this.debugMode) console.error('Face auth error:', error);
 
@@ -263,17 +263,17 @@ class EKYCApp {
                 break;
             case 'NotReadableError':
             case 'TrackStartError':
-                errorMessage = 'Camera Ä‘ang Ä‘Æ°á»£c sá»­ dá»¥ng bá»Ÿi á»©ng dá»¥ng khĂ¡c';
+                errorMessage = 'Camera đang được sử dụng bởi ứng dụng khác';
                 break;
             case 'OverconstrainedError':
             case 'ConstraintNotSatisfiedError':
-                errorMessage = 'Camera khĂ´ng há»— trá»£ cáº¥u hĂ¬nh yĂªu cáº§u';
+                errorMessage = 'Camera không hỗ trợ cấu hình yêu cầu';
                 break;
             case 'NotSupportedError':
                 errorMessage = this.translations[this.currentLanguage].browserNotSupported;
                 break;
             case 'AbortError':
-                errorMessage = 'Truy cáº­p camera bá»‹ há»§y bá»';
+                errorMessage = 'Truy cập camera bị hủy bỏ';
                 break;
             default:
                 if (error.message) {
@@ -291,11 +291,11 @@ class EKYCApp {
 
     // 10. Fallback Solution
     enableFallbackMode() {
-        // Fallback náº¿u face auth khĂ´ng hoáº¡t Ä‘á»™ng
+        // Fallback nếu face auth không hoạt động
         if (!this.faceAuthSupported) {
             this.showError(this.translations[this.currentLanguage].fallbackMode);
             
-            // áº¨n camera controls, chá»‰ hiá»‡n upload button
+            // Ẩn camera controls, chỉ hiện upload button
             const captureBtn = document.getElementById('captureBtn');
             const faceCaptureBtn = document.getElementById('faceCaptureBtn');
             
@@ -446,13 +446,13 @@ class EKYCApp {
             
             switch (docType) {
                 case 'passport':
-                    title = this.currentLanguage === 'vi' ? 'HÆ°á»›ng dáº«n chá»¥p áº£nh Há»™ chiáº¿u' : 'Passport Photo Guidelines';
+                    title = this.currentLanguage === 'vi' ? 'Hướng dẫn chụp ảnh Hộ chiếu' : 'Passport Photo Guidelines';
                     break;
                 case 'license':
-                    title = this.currentLanguage === 'vi' ? 'HÆ°á»›ng dáº«n chá»¥p áº£nh Báº±ng lĂ¡i xe' : 'Driver License Photo Guidelines';
+                    title = this.currentLanguage === 'vi' ? 'Hướng dẫn chụp ảnh Bằng lái xe' : 'Driver License Photo Guidelines';
                     break;
                 case 'other':
-                    title = this.currentLanguage === 'vi' ? 'HÆ°á»›ng dáº«n chá»¥p áº£nh Giáº¥y tá» khĂ¡c' : 'Other Document Photo Guidelines';
+                    title = this.currentLanguage === 'vi' ? 'Hướng dẫn chụp ảnh Giấy tờ khác' : 'Other Document Photo Guidelines';
                     break;
             }
             
@@ -503,9 +503,9 @@ class EKYCApp {
         if (cameraTitle) {
             const texts = this.translations[this.currentLanguage];
             if (this.currentStep === 1) {
-                cameraTitle.textContent = this.currentLanguage === 'vi' ? 'CHá»¤P Máº¶T TRÆ¯á»C' : 'TAKE FRONT PHOTO';
+                cameraTitle.textContent = this.currentLanguage === 'vi' ? 'CHỤP MẶT TRƯỚC' : 'TAKE FRONT PHOTO';
             } else if (this.currentStep === 2) {
-                cameraTitle.textContent = this.currentLanguage === 'vi' ? 'CHá»¤P Máº¶T SAU' : 'TAKE BACK PHOTO';
+                cameraTitle.textContent = this.currentLanguage === 'vi' ? 'CHỤP MẶT SAU' : 'TAKE BACK PHOTO';
             }
         }
     }
@@ -571,7 +571,7 @@ class EKYCApp {
 
         } catch (error) {
             console.error('Photo capture error:', error);
-            this.showError('Lá»—i khi chá»¥p áº£nh. Vui lĂ²ng thá»­ láº¡i.');
+            this.showError('Lỗi khi chụp ảnh. Vui lòng thử lại.');
         }
     }
 
@@ -590,7 +590,7 @@ class EKYCApp {
             this.nextStep();
         } catch (error) {
             console.error('File upload error:', error);
-            this.showError('Lá»—i khi táº£i áº£nh lĂªn. Vui lĂ²ng thá»­ láº¡i.');
+            this.showError('Lỗi khi tải ảnh lên. Vui lòng thử lại.');
         }
     }
 
@@ -714,7 +714,7 @@ class EKYCApp {
         try {
             this.showLoading(true);
             
-            // 7. Debug Steps - Báº­t debug mode
+            // 7. Debug Steps - Bật debug mode
             const config = {
                 debug: this.debugMode,
                 modelPath: './models',
@@ -850,7 +850,7 @@ class EKYCApp {
 
         } catch (error) {
             console.error('Face photo capture error:', error);
-            this.showError('Lá»—i khi chá»¥p áº£nh khuĂ´n máº·t. Vui lĂ²ng thá»­ láº¡i.');
+            this.showError('Lỗi khi chụp ảnh khuôn mặt. Vui lòng thử lại.');
         }
     }
 
@@ -863,7 +863,7 @@ class EKYCApp {
         this.faceDetectionActive = false;
         
         // Show completion message
-        this.showSuccess('XĂ¡c thá»±c hoĂ n táº¥t! Äang chuyá»ƒn hÆ°á»›ng...');
+        this.showSuccess('Xác thực hoàn tất! Đang chuyển hướng...');
         
         // Redirect to success page after 2 seconds
         setTimeout(() => {
@@ -923,7 +923,7 @@ class EKYCApp {
         successDiv.className = 'error-message'; // Reuse error styling
         successDiv.innerHTML = `
             <div class="error-content" style="background: #28a745;">
-                <span class="error-icon">âœ“</span>
+                <span class="error-icon">✓</span>
                 <span>${message}</span>
             </div>
         `;
