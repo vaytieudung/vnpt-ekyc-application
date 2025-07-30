@@ -259,7 +259,7 @@ body {
 }
 
 .instructions-text li:before {
-    content: "â€¢";
+    content: "•";
     color: #00d4aa;
     font-weight: bold;
     position: absolute;
@@ -293,7 +293,7 @@ body {
 }
 
 .bad-image:after {
-    content: "Ă—";
+    content: "×";
     position: absolute;
     top: -8px;
     right: -8px;
@@ -527,11 +527,71 @@ body {
 }
 
 .face-oval {
-    width: 250px;
-    height: 320px;
-    border: 3px dashed rgba(0, 212, 170, 0.8);
+    width: 151px;
+    height: 374px;
+    border: 3px solid rgb(255, 255, 255);
     border-radius: 50%;
-    background: rgba(0, 212, 170, 0.1);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Title Bar */
+.camera-header h2, .face-header h2 {
+    color: rgb(255, 255, 255);
+}
+
+/* Main Text Color - Title & Sub Text */
+.main-title, .main-subtitle {
+    color: rgb(255, 255, 255);
+}
+
+/* Background Color */
+body {
+    box-sizing: border-box;
+    color: rgb(33, 37, 41);
+    display: block;
+    font-family: Roboto, sans-serif, system-ui;
+    font-size: 14px;
+    font-weight: 400;
+    height: 605px;
+    line-height: 21px;
+    text-align: left;
+    text-size-adjust: 100%;
+    unicode-bidi: isolate;
+    width: 295px;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+/* Link on GTTT screenshot */
+.instructions-text ul li a {
+    color: rgb(217, 217, 217);
+}
+
+/* Button & Feedback color */
+.start-btn, .capture-btn, .upload-btn, .video-btn.primary {
+    background-color: rgb(24, 214, 150);
+    color: rgb(255, 255, 255);
+}
+
+/* Background Color screenshot color */
+.modal-content, .face-guide-modal-content {
+    background-color: rgb(255, 255, 255);
+    color: rgb(20, 39, 48);
+}
+
+/* Effect Color */
+.camera-controls .capture-btn:hover, .camera-controls .upload-btn:hover, .video-btn.primary:hover {
+    background-color: rgb(24, 214, 150);
+    filter: brightness(1.1);
+}
+
+/* Capture Button color */
+.capture-btn span, .upload-btn span {
+    color: rgb(255, 255, 255);
+}
+
+/* Oval Face Capture Border Color */
+.face-oval {
+    border-color: rgb(255, 255, 255);
 }
 
 .face-status {
