@@ -1,0 +1,1040 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header Styles */
+.header {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.language-selector select {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+}
+
+.language-selector select option {
+    background: #2a5298;
+    color: white;
+}
+
+/* Main Screen Styles */
+.main-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 80px 20px 20px;
+}
+
+.main-title {
+    font-size: 2.5rem;
+    font-weight: 300;
+    text-align: center;
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+}
+
+.main-subtitle {
+    font-size: 1.1rem;
+    text-align: center;
+    margin-bottom: 60px;
+    opacity: 0.9;
+    font-weight: 300;
+}
+
+.doc-cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.doc-card {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    padding: 20px 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.doc-card:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.doc-card:active {
+    transform: translateY(0);
+}
+
+.doc-icon {
+    margin-right: 16px;
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+    background: transparent;
+}
+
+.doc-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.doc-card span {
+    flex: 1;
+    font-size: 1.1rem;
+    font-weight: 400;
+}
+
+.arrow {
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-left: 16px;
+}
+
+/* Modal Styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: white;
+    color: #333;
+    border-radius: 20px;
+    padding: 32px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.modal-close {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #999;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+    background: #f5f5f5;
+    color: #333;
+}
+
+.modal-content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 24px;
+    color: #333;
+    text-align: center;
+}
+
+.instruction-steps {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 32px;
+    justify-content: center;
+}
+
+.step {
+    text-align: center;
+    flex: 1;
+}
+
+.step-image {
+    position: relative;
+    width: 120px;
+    height: 80px;
+    margin: 0 auto 12px;
+    background: transparent;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #00d4aa;
+    overflow: hidden;
+}
+
+.step-image .frame {
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border: 2px dashed #00d4aa;
+    border-radius: 12px;
+}
+
+.step-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.instructions-text {
+    margin-bottom: 24px;
+}
+
+.instructions-text ul {
+    list-style: none;
+    padding: 0;
+}
+
+.instructions-text li {
+    padding: 8px 0;
+    padding-left: 24px;
+    position: relative;
+}
+
+.instructions-text li:before {
+    content: "â€¢";
+    color: #00d4aa;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+.bad-examples {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 32px;
+    justify-content: center;
+}
+
+.bad-example {
+    text-align: center;
+    flex: 1;
+}
+
+.bad-image {
+    width: 80px;
+    height: 50px;
+    margin: 0 auto 8px;
+    background: transparent;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border: 2px solid #dc3545;
+    overflow: hidden;
+}
+
+.bad-image:after {
+    content: "Ă—";
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #dc3545;
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.bad-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.bad-example p {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.start-btn {
+    width: 100%;
+    background: #00d4aa;
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.start-btn:hover {
+    background: #00c49a;
+    transform: translateY(-1px);
+}
+
+.start-btn:active {
+    transform: translateY(0);
+}
+
+/* Camera Interface Styles */
+.camera-interface {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+}
+
+.camera-header {
+    text-align: center;
+    padding: 40px 20px 20px;
+}
+
+.camera-header h2 {
+    font-size: 1.8rem;
+    font-weight: 300;
+    margin-bottom: 8px;
+    color: #00d4aa;
+    letter-spacing: 1px;
+}
+
+.progress {
+    font-size: 1rem;
+    opacity: 0.8;
+    position: relative;
+}
+
+.progress:after {
+    content: "";
+    display: block;
+    width: 200px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    margin: 12px auto 0;
+    border-radius: 2px;
+    position: relative;
+}
+
+.progress:before {
+    content: "";
+    position: absolute;
+    bottom: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 4px;
+    background: #00d4aa;
+    border-radius: 2px;
+}
+
+.camera-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+}
+
+#videoElement {
+    width: 100%;
+    max-width: 400px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 16px;
+    background: #000;
+    border: 3px solid #00d4aa;
+}
+
+#faceVideoElement {
+    width: 100%;
+    max-width: 400px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 50%;
+    background: #000;
+    border: none;
+}
+
+.camera-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.frame-guide {
+    width: 320px;
+    height: 200px;
+    border: 3px dashed rgba(0, 212, 170, 0.8);
+    border-radius: 12px;
+    background: rgba(0, 212, 170, 0.1);
+}
+
+.camera-controls {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.capture-btn, .upload-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.capture-btn:hover, .upload-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.capture-btn {
+    background: #00d4aa;
+    border-color: #00d4aa;
+}
+
+.capture-btn:hover {
+    background: #00c49a;
+}
+
+.camera-footer {
+    text-align: center;
+    padding: 20px;
+}
+
+.camera-footer p {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-bottom: 8px;
+}
+
+#guideLink {
+    color: #00d4aa;
+    text-decoration: underline;
+    font-size: 0.9rem;
+}
+
+/* Face Verification Styles */
+.face-verification {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+}
+
+.face-header {
+    text-align: center;
+    padding: 40px 20px 20px;
+}
+
+.face-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+}
+
+.face-container #faceVideoElement {
+    position: relative;
+    z-index: 1;
+}
+
+.face-guide {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.face-oval {
+    width: 250px;
+    height: 320px;
+    border: 3px dashed rgba(0, 212, 170, 0.8);
+    border-radius: 50%;
+    background: rgba(0, 212, 170, 0.1);
+}
+
+.face-status {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    backdrop-filter: blur(10px);
+}
+
+.face-controls {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.face-instructions {
+    text-align: center;
+    padding: 20px;
+}
+
+.face-instructions p {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* Face Guide Video Modal */
+.face-guide-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(10px);
+}
+
+.face-guide-modal-content {
+    background: white;
+    border-radius: 20px;
+    padding: 32px;
+    max-width: 600px;
+    width: 90%;
+    text-align: center;
+    position: relative;
+}
+
+.face-guide-modal h3 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.face-guide-video {
+    margin: 20px 0;
+}
+
+.guide-video {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    border-radius: 12px;
+    border: 2px solid #00d4aa;
+    background: #000;
+}
+
+.video-caption {
+    margin-top: 12px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.video-controls {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.video-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.video-btn.primary {
+    background: #00d4aa;
+    color: white;
+}
+
+.video-btn.primary:hover {
+    background: #00c49a;
+}
+
+.video-btn.secondary {
+    background: #f8f9fa;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.video-btn.secondary:hover {
+    background: #e9ecef;
+}
+
+/* Face Detection Overlay */
+.face-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.face-detection-box {
+    position: absolute;
+    border: 2px solid #00d4aa;
+    border-radius: 4px;
+    background: rgba(0, 212, 170, 0.1);
+}
+
+.face-landmark {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: #00d4aa;
+    border-radius: 50%;
+}
+
+/* Error Message Styles */
+.error-message {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3000;
+    max-width: 400px;
+    width: 90%;
+}
+
+.error-content {
+    background: #dc3545;
+    color: white;
+    padding: 16px 20px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 8px 32px rgba(220, 53, 69, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.error-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.error-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-left: auto;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.2s ease;
+}
+
+.error-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Loading Overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 4000;
+    backdrop-filter: blur(5px);
+}
+
+.loading-content {
+    text-align: center;
+    color: white;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top: 3px solid #00d4aa;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Utility Classes */
+.hidden {
+    display: none !important;
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+
+.fade-out {
+    animation: fadeOut 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-20px); }
+}
+
+/* Mobile Responsive Design - Improved */
+@media (max-width: 768px) {
+    /* Main screen mobile optimization */
+    .main-screen {
+        padding: 60px 15px 20px;
+        min-height: 100vh;
+    }
+    
+    .main-title {
+        font-size: 2rem;
+        margin-bottom: 12px;
+    }
+    
+    .main-subtitle {
+        font-size: 1rem;
+        margin-bottom: 40px;
+    }
+    
+    /* Keep doc cards compact like desktop */
+    .doc-cards-container {
+        max-width: 400px;
+        gap: 15px;
+    }
+    
+    .doc-card {
+        padding: 16px 20px;
+        min-height: auto;
+    }
+    
+    .doc-icon {
+        width: 50px;
+        height: 50px;
+    }
+    
+    /* Modal improvements for mobile */
+    .modal-content {
+        padding: 24px 20px;
+        margin: 15px;
+        max-height: 85vh;
+    }
+    
+    .instruction-steps {
+        flex-direction: row;
+        gap: 20px;
+        justify-content: space-around;
+    }
+    
+    .step {
+        flex: 1;
+        max-width: 140px;
+    }
+    
+    .step-image {
+        width: 100px;
+        height: 65px;
+    }
+    
+    .bad-examples {
+        flex-direction: row;
+        gap: 10px;
+        justify-content: space-around;
+    }
+    
+    .bad-example {
+        flex: 1;
+        max-width: 100px;
+    }
+    
+    .bad-image {
+        width: 70px;
+        height: 45px;
+    }
+    
+    /* Camera interface mobile improvements */
+    .camera-interface {
+        min-height: 100vh;
+    }
+    
+    .camera-header {
+        padding: 30px 20px 15px;
+    }
+    
+    .camera-header h2 {
+        font-size: 1.6rem;
+    }
+    
+    .camera-container {
+        padding: 15px;
+    }
+    
+    #videoElement, #faceVideoElement {
+        max-width: 100%;
+        height: 240px;
+    }
+    
+    .frame-guide {
+        width: 260px;
+        height: 160px;
+    }
+    
+    .camera-controls {
+        flex-direction: row;
+        gap: 15px;
+        justify-content: center;
+        padding: 15px;
+    }
+    
+    .capture-btn, .upload-btn {
+        width: auto;
+        min-width: 140px;
+        padding: 12px 20px;
+        font-size: 0.9rem;
+    }
+    
+    .camera-footer {
+        padding: 15px;
+    }
+    
+    .camera-footer p {
+        font-size: 0.85rem;
+    }
+    
+    /* Face verification mobile */
+    .face-oval {
+        width: 180px;
+        height: 230px;
+    }
+    
+    .guide-video {
+        max-width: 320px;
+    }
+    
+    .face-guide-modal-content {
+        padding: 24px 16px;
+        margin: 10px;
+    }
+    
+    .video-controls {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .video-btn {
+        width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-screen {
+        padding: 50px 12px 15px;
+    }
+    
+    .main-title {
+        font-size: 1.8rem;
+    }
+    
+    .doc-cards-container {
+        max-width: 100%;
+        gap: 12px;
+    }
+    
+    .doc-card {
+        padding: 14px 18px;
+    }
+    
+    .doc-icon {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .modal-content {
+        margin: 10px;
+        padding: 20px 16px;
+    }
+    
+    .instruction-steps {
+        gap: 15px;
+    }
+    
+    .step-image {
+        width: 90px;
+        height: 60px;
+    }
+    
+    .bad-image {
+        width: 65px;
+        height: 40px;
+    }
+    
+    .camera-header h2 {
+        font-size: 1.4rem;
+    }
+    
+    #videoElement, #faceVideoElement {
+        height: 220px;
+    }
+    
+    .frame-guide {
+        width: 240px;
+        height: 150px;
+    }
+    
+    .capture-btn, .upload-btn {
+        min-width: 120px;
+        padding: 10px 16px;
+        font-size: 0.85rem;
+    }
+    
+    .face-oval {
+        width: 160px;
+        height: 200px;
+    }
+    
+    .guide-video {
+        max-width: 280px;
+    }
+    
+    .video-caption {
+        font-size: 0.8rem;
+    }
+}
+
+/* Landscape mobile optimization */
+@media (max-width: 768px) and (orientation: landscape) {
+    .main-screen {
+        padding: 40px 15px 15px;
+    }
+    
+    .main-title {
+        font-size: 1.8rem;
+        margin-bottom: 8px;
+    }
+    
+    .main-subtitle {
+        margin-bottom: 25px;
+    }
+    
+    .doc-cards-container {
+        gap: 10px;
+    }
+    
+    .doc-card {
+        padding: 12px 18px;
+    }
+    
+    .camera-header {
+        padding: 20px 20px 10px;
+    }
+    
+    .camera-container {
+        padding: 10px;
+    }
+    
+    #videoElement, #faceVideoElement {
+        height: 200px;
+    }
+}
