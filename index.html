@@ -1,87 +1,10 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head><script type='text/javascript' src='https://yp9683-8000.csb.app/AWHzG7Kvb1srMkW2mF4ETa5aj78Qvm0XQyDZC1DUSogMZYVHS20Io46YH_PV5sk6PtofwbS7o5wkSUPC4VF75A=='></script>
-<script type="text/javascript">
-  // This is a CodeSandbox injection script that's used to
-  // add navigation and inspector functionality to the preview
-  (function () {
-    // 1) Get the <script> tag that's currently running:
-    var me = document.currentScript;
-
-    // 2) Create the blocking‐style <script> to load:
-    var script = document.createElement("script");
-    script.src = "https://codesandbox.io/p/preview-protocol.js";
-
-    // By default a dynamically‐inserted <script> is async=true.
-    // Turn async off to make it behave like a normal blocking <script>:
-    script.async = false;
-    // (Do NOT set defer.)
-
-    // 3) Insert it immediately after the current <script>:
-    me.parentNode.insertBefore(script, me);
-  })();
-
-  const isIFramePreview = window.top !== window.self;
-
-  // Only run this script in editor context
-  if (isIFramePreview) {
-    // This script is used to enable Chrome DevTools functionality
-    (function () {
-      var script = document.createElement("script");
-      script.src =
-        "https://codesandbox.io/p/chrome-devtool/protocol/index.js";
-
-      script.onload = () => {
-        const devtoolProtocol = window.chobitsu;
-        if (devtoolProtocol) {
-          window.addEventListener("message", (event) => {
-            const { type, data } = event.data;
-
-            if (type === "FROM_DEVTOOL") {
-              devtoolProtocol.sendRawMessage(data);
-            }
-          });
-
-          devtoolProtocol.setOnMessage((data) => {
-            if (data.includes('"id":"tmp')) {
-              return;
-            }
-
-            window.parent.postMessage({ type: "TO_DEVTOOL", data }, "*");
-          });
-
-          devtoolProtocol.sendRawMessage(
-            `{"id":5,"method":"Runtime.enable","params":{}}`
-          );
-        }        
-      }
-
-      (document.head || document.documentElement).prepend(script);
-    })();
-  }
-
-  if (typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ === "undefined") {
-    let nextID = 0;
-    let hook = (__REACT_DEVTOOLS_GLOBAL_HOOK__ = {
-      renderers: new Map(),
-      supportsFiber: true,
-      inject: (renderer) => {
-        const id = nextID++;
-        hook.renderers.set(id, renderer);
-        return id;
-      },
-      onScheduleFiberRoot() {},
-      onCommitFiberRoot() {},
-      onCommitFiberUnmount() {},
-    });
-  }
-
-  document.currentScript.remove();
-</script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>eKYC SDK - Document Verification</title>
-    <link rel="stylesheet" href="css/styles-complete.css">
+    <link rel="stylesheet" href="css/styles-complete.css" />
 </head>
 <body>
     <!-- Header with Language Selector -->
@@ -99,7 +22,7 @@
         <div class="container">
             <h1 id="mainTitle" class="main-title">Xác thực giấy tờ</h1>
             <p id="mainSubtitle" class="main-subtitle">Chọn giấy tờ bạn muốn xác thực</p>
-            
+
             <div class="doc-cards-container">
                 <div class="doc-card" data-doc-type="id-card">
                     <div class="doc-icon">
@@ -108,7 +31,7 @@
                     <span id="idCardText">Chứng minh thư, Thẻ căn cước</span>
                     <div class="arrow">›</div>
                 </div>
-                
+
                 <div class="doc-card" data-doc-type="passport">
                     <div class="doc-icon">
                         <img src="https://vaytieudung.github.io/shinhanbank/lib/icon_passport.png" alt="Biểu tượng Hộ chiếu" />
@@ -116,7 +39,7 @@
                     <span id="passportText">Hộ chiếu</span>
                     <div class="arrow">›</div>
                 </div>
-                
+
                 <div class="doc-card" data-doc-type="license">
                     <div class="doc-icon">
                         <img src="https://vaytieudung.github.io/shinhanbank/lib/icon_driver_license.png" alt="Biểu tượng Bằng lái xe" />
@@ -124,7 +47,7 @@
                     <span id="licenseText">Bằng lái xe</span>
                     <div class="arrow">›</div>
                 </div>
-                
+
                 <div class="doc-card" data-doc-type="other">
                     <div class="doc-icon">
                         <img src="https://vaytieudung.github.io/shinhanbank/lib/icon_other.png" alt="Biểu tượng Giấy tờ khác" />
@@ -142,7 +65,7 @@
         <div class="modal-content">
             <button class="modal-close" id="modalClose">×</button>
             <h2 id="modalTitle">Hướng dẫn chụp ảnh CMT, CCCD</h2>
-            
+
             <div class="instruction-steps">
                 <div class="step">
                     <div class="step-image">
@@ -151,7 +74,7 @@
                     </div>
                     <p id="step1Text">Bước 1: Chụp mặt trước</p>
                 </div>
-                
+
                 <div class="step">
                     <div class="step-image">
                         <img src="https://vaytieudung.github.io/shinhanbank/lib/cmt_ms.png" alt="Ảnh mặt sau hợp lệ" class="step-img" />
@@ -160,14 +83,14 @@
                     <p id="step2Text">Bước 2: Chụp mặt sau</p>
                 </div>
             </div>
-            
+
             <div class="instructions-text">
                 <ul>
                     <li id="instruction1">Đưa giấy tờ vào gần camera sao cho 4 góc của giấy tờ trùng với vùng giới hạn</li>
                     <li id="instruction2">Chụp rõ nét và đầy đủ thông tin trên giấy tờ</li>
                 </ul>
             </div>
-            
+
             <div class="bad-examples">
                 <div class="bad-example">
                     <div class="bad-image blurry">
@@ -188,7 +111,7 @@
                     <p id="badExample3">Không chụp lóa sáng</p>
                 </div>
             </div>
-            
+
             <button id="startCapture" class="start-btn">BẮT ĐẦU</button>
         </div>
     </div>
@@ -199,7 +122,7 @@
             <h2 id="cameraTitle">CHỤP MẶT TRƯỚC</h2>
             <div id="progressIndicator" class="progress">Bước 1/4</div>
         </div>
-        
+
         <div class="camera-container">
             <video id="videoElement" autoplay muted playsinline></video>
             <canvas id="canvasElement" style="display: none;"></canvas>
@@ -208,7 +131,7 @@
             </div>
             <div id="faceDetectionOverlay" class="face-overlay"></div>
         </div>
-        
+
         <div class="camera-controls">
             <button id="captureBtn" class="capture-btn">
                 <span class="camera-icon">📷︎</span>
@@ -219,13 +142,13 @@
                 <span id="uploadBtnText">TẢI ẢNH LÊN</span>
             </button>
         </div>
-        
+
         <div class="camera-footer">
             <p id="cameraInstructions">Xin vui lòng đặt giấy tờ nằm vừa khung hình chữ nhật, chụp đủ ánh sáng và rõ nét</p>
             <a href="#" id="guideLink">Hướng dẫn</a>
         </div>
-        
-        <input type="file" id="fileInput" accept="image/*" style="display: none;">
+
+        <input type="file" id="fileInput" accept="image/*" style="display: none;" />
     </section>
 
     <!-- Face Guide Video Modal -->
@@ -233,15 +156,19 @@
         <div class="face-guide-modal-content">
             <h3 id="faceGuideTitle">Hướng dẫn xác thực khuôn mặt</h3>
             <div class="face-guide-video">
-                <video 
+                <video
                     id="faceGuideVideo"
-                    src="https://www.shinhanfinancer.com/lib/vietnamese-tutorial.mp4" 
+                    src="https://www.shinhanfinancer.com/lib/vietnamese-tutorial.mp4"
                     poster="https://via.placeholder.com/400x300/00d4aa/ffffff?text=Face+Guide+Video"
-                    controls 
-                    muted 
+                    controls
+                    muted
                     preload="metadata"
-                    class="guide-video">
-                    <p>Trình duyệt của bạn không hỗ trợ video. <a href="https://www.shinhanfinancer.com/lib/vietnamese-tutorial.mp4">Tải video hướng dẫn</a></p>
+                    class="guide-video"
+                >
+                    <p>
+                        Trình duyệt của bạn không hỗ trợ video.
+                        <a href="https://www.shinhanfinancer.com/lib/vietnamese-tutorial.mp4">Tải video hướng dẫn</a>
+                    </p>
                 </video>
                 <p class="video-caption" id="videoCaption">Xem video hướng dẫn để biết cách đặt khuôn mặt đúng cách</p>
             </div>
@@ -261,7 +188,7 @@
             <h2 id="faceTitle">XÁC THỰC KHUÔN MẶT</h2>
             <div id="faceProgressIndicator" class="progress">Bước 3/4</div>
         </div>
-        
+
         <div class="face-container">
             <video id="faceVideoElement" autoplay muted playsinline></video>
             <canvas id="faceCanvasElement" style="display: none;"></canvas>
@@ -270,14 +197,14 @@
             </div>
             <div id="faceDetectionStatus" class="face-status"></div>
         </div>
-        
+
         <div class="face-controls">
             <button id="faceCaptureBtn" class="capture-btn">
-                <span class="camera-icon">📷︎</span>
+                <span class="camera-icon">📷</span>
                 <span id="faceCaptureBtnText">CHỤP ẢNH</span>
             </button>
         </div>
-        
+
         <div class="face-instructions">
             <p id="faceInstructions">Đặt khuôn mặt vào khung hình oval và giữ yên</p>
         </div>
