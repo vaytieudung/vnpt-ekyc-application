@@ -44,30 +44,22 @@ npx serve .
 
 3. Mở trình duyệt và truy cập: `http://localhost:8000`
 
-📁 Cấu trúc Project hoàn chỉnh:
+## 📁 Cấu trúc thư mục
+
+```
 ekyc-sdk/
-├── 📄 index.html                    # Trang chính ứng dụng
-├── 📁 css/
-│   └── 📄 styles.css               # Responsive CSS với oval face frame
-├── 📁 js/
-│   ├── 📄 app.js                   # Logic chính với 3 tính năng mới
-│   ├── 📄 face-api.min.js          # Face detection library
-│   ├── 📄 jsQR.js                  # QR code detection
-│   ├── 📄 lottie.min.js            # Animation library
-│   └── 📄 popper.min.js            # Positioning library
-├── 📁 models/                      # AI models cho face detection
-│   ├── 📄 face_expression_model-weights_manifest.json
-│   ├── 📄 face_landmark_68_model-weights_manifest.json
-│   ├── 📄 face_recognition_model-weights_manifest.json
-│   └── 📄 tiny_face_detector_model-weights_manifest.json
-├── 📁 .github/workflows/
-│   └── 📄 deploy.yml               # Auto-deploy GitHub Actions
-├── 📄 README.md                    # Tài liệu chính
-├── 📄 DEPLOY.md                    # Hướng dẫn deploy chi tiết
-├── 📄 PROJECT_STRUCTURE.md         # Cấu trúc project
-├── 📄 LICENSE                      # MIT License
-├── 📄 package.json                 # Project metadata
-└── 📄 .gitignore                   # Git ignore rul
+├── index.html              # Trang chính
+├── css/
+│   └── styles.css          # Stylesheet chính
+├── js/
+│   └── app.js              # Logic ứng dụng
+├── models/                 # AI models cho face detection
+│   ├── face_expression_model-weights_manifest.json
+│   ├── face_landmark_68_model-weights_manifest.json
+│   ├── face_recognition_model-weights_manifest.json
+│   └── tiny_face_detector_model-weights_manifest.json
+├── README.md               # Tài liệu này
+└── .gitignore             # Git ignore file
 ```
 
 ## 🎯 Hướng dẫn sử dụng
