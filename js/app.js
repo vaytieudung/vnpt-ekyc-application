@@ -243,40 +243,82 @@ class EKYCApp {
         if (this.debugMode) console.error('Face auth error:', error);
 
         let errorMessage = this.translations[this.currentLanguage].cameraError;
+        let showFallback = false;
 
         switch (error.name) {
             case 'NotAllowedError':
             case 'PermissionDeniedError':
                 errorMessage = this.translations[this.currentLanguage].permissionDenied;
+                showFallback = true;
                 break;
             case 'NotFoundError':
             case 'DevicesNotFoundError':
                 errorMessage = this.translations[this.currentLanguage].deviceNotFound;
+                showFallback = true;
                 break;
             case 'NotReadableError':
             case 'TrackStartError':
-                errorMessage = 'Camera đang được sử dụng bởi ứng dụng khác';
+                errorMessage = 'Camera đang được sử dụng bởi ứng dụng khác. Vui lòng đóng các ứng dụng khác đang sử dụng camera và thử lại.';
+                showFallback = true;
                 break;
             case 'OverconstrainedError':
             case 'ConstraintNotSatisfiedError':
-                errorMessage = 'Camera không hỗ trợ cấu hình yêu cầu';
-                break;
+                errorMessage = 'Camera không hỗ trợ cấu hình yêu cầu. Ứng dụng sẽ thử với cài đặt khác.';
+                // Try with different constraints
+                this.tryAlternativeCameraConstraints();
+                return;
             case 'NotSupportedError':
                 errorMessage = this.translations[this.currentLanguage].browserNotSupported;
+                showFallback = true;
                 break;
             case 'AbortError':
-                errorMessage = 'Truy cập camera bị hủy bỏ';
+                errorMessage = 'Truy cập camera bị hủy bỏ. Vui lòng thử lại.';
                 break;
             default:
                 if (error.message) {
                     errorMessage = error.message;
                 }
+                // For generic errors, still show fallback option
+                showFallback = true;
         }
 
         this.showError(errorMessage);
         
         // Enable fallback mode for certain errors
-        if (['NotAllowedError', 'NotFoundError', 'NotSupportedError'].includes(error.name)) {
+        if (showFallback) {
+            this.enableFallbackMode();
+        }
+    }
+
+    // Try alternative camera constraints if primary ones fail
+    async tryAlternativeCameraConstraints() {
+        try {
+            const videoElement = document.getElementById('videoElement') || document.getElementById('faceVideoElement');
+            if (!videoElement) return;
+
+            // Try with simpler constraints
+            const alternativeConstraints = {
+                video: {
+                    facingMode: 'user' // Try front camera instead
+                }
+            };
+
+            if (this.debugMode) {
+                console.log('Trying alternative camera constraints:', alternativeConstraints);
+            }
+
+            this.cameraStream = await navigator.mediaDevices.getUserMedia(alternativeConstraints);
+            videoElement.srcObject = this.cameraStream;
+            
+            videoElement.addEventListener('loadedmetadata', () => {
+                videoElement.play();
+                this.showLoading(false);
+                this.showSuccess('Camera connected successfully with alternative settings!');
+            });
+
+        } catch (error) {
+            console.error('Alternative camera constraints also failed:', error);
+            this.showError('Không thể truy cập camera ngay cả với cài đặt thay thế. Vui lòng kiểm tra quyền truy cập và thử lại.');
             this.enableFallbackMode();
         }
     }
@@ -284,22 +326,51 @@ class EKYCApp {
     // 10. Fallback Solution
     enableFallbackMode() {
         // Fallback nếu face auth không hoạt động
-        if (!this.faceAuthSupported) {
-            this.showError(this.translations[this.currentLanguage].fallbackMode);
-            
-            // Ẩn camera controls, chỉ hiện upload button
-            const captureBtn = document.getElementById('captureBtn');
-            const faceCaptureBtn = document.getElementById('faceCaptureBtn');
-            
-            if (captureBtn) captureBtn.style.display = 'none';
-            if (faceCaptureBtn) faceCaptureBtn.style.display = 'none';
-            
-            // Highlight upload button
-            const uploadBtn = document.getElementById('uploadBtn');
-            if (uploadBtn) {
-                uploadBtn.style.background = '#00d4aa';
-                uploadBtn.style.transform = 'scale(1.1)';
+        this.showError(this.translations[this.currentLanguage].fallbackMode);
+        
+        // Ẩn camera controls, chỉ hiện upload button
+        const captureBtn = document.getElementById('captureBtn');
+        const faceCaptureBtn = document.getElementById('faceCaptureBtn');
+        
+        if (captureBtn) captureBtn.style.display = 'none';
+        if (faceCaptureBtn) faceCaptureBtn.style.display = 'none';
+        
+        // Highlight upload button
+        const uploadBtn = document.getElementById('uploadBtn');
+        if (uploadBtn) {
+            uploadBtn.style.background = '#00d4aa';
+            uploadBtn.style.transform = 'scale(1.1)';
+            // Add text to indicate this is the fallback option
+            const uploadBtnText = document.getElementById('uploadBtnText');
+            if (uploadBtnText) {
+                uploadBtnText.textContent = this.currentLanguage === 'vi' ? 
+                    'TẢI ẢNH LÊN (DỰ PHÒNG)' : 'UPLOAD PHOTO (FALLBACK)';
             }
+        }
+        
+        // Show a more detailed fallback message
+        const fallbackMessage = document.createElement('div');
+        fallbackMessage.className = 'error-message';
+        fallbackMessage.innerHTML = `
+            <div class="error-content" style="background: #17a2b8; margin-top: 10px;">
+                <span class="error-icon">ℹ️</span>
+                <span>${this.currentLanguage === 'vi' ? 
+                    'Bạn có thể tải ảnh lên thay vì sử dụng camera. Nhấn nút tải ảnh bên trên.' : 
+                    'You can upload photos instead of using the camera. Click the upload button above.'}</span>
+            </div>
+        `;
+        
+        // Insert after the main error message
+        const errorMessage = document.getElementById('errorMessage');
+        if (errorMessage && errorMessage.parentNode) {
+            errorMessage.parentNode.insertBefore(fallbackMessage, errorMessage.nextSibling);
+            
+            // Auto remove after 10 seconds
+            setTimeout(() => {
+                if (document.body.contains(fallbackMessage)) {
+                    document.body.removeChild(fallbackMessage);
+                }
+            }, 10000);
         }
     }
 
@@ -315,10 +386,35 @@ class EKYCApp {
 
         // Document cards
         const docCards = document.querySelectorAll('.doc-card');
-        docCards.forEach(card => {
+        docCards.forEach((card, index) => {
+            // Click event
             card.addEventListener('click', (e) => {
                 const docType = card.getAttribute('data-doc-type');
                 this.showInstructionModal(docType);
+                this.updateCardSelection(card);
+            });
+            
+            // Keyboard event for accessibility
+            card.addEventListener('keydown', (e) => {
+                if (e.code === 'Enter' || e.code === 'Space') {
+                    e.preventDefault();
+                    const docType = card.getAttribute('data-doc-type');
+                    this.showInstructionModal(docType);
+                    this.updateCardSelection(card);
+                }
+            });
+            
+            // Arrow key navigation
+            card.addEventListener('keydown', (e) => {
+                if (e.code === 'ArrowRight' || e.code === 'ArrowDown') {
+                    e.preventDefault();
+                    const nextCard = docCards[index + 1] || docCards[0];
+                    nextCard.focus();
+                } else if (e.code === 'ArrowLeft' || e.code === 'ArrowUp') {
+                    e.preventDefault();
+                    const prevCard = docCards[index - 1] || docCards[docCards.length - 1];
+                    prevCard.focus();
+                }
             });
         });
 
@@ -327,6 +423,14 @@ class EKYCApp {
         if (modalClose) {
             modalClose.addEventListener('click', () => {
                 this.hideInstructionModal();
+            });
+            
+            // Keyboard support for modal close
+            modalClose.addEventListener('keydown', (e) => {
+                if (e.code === 'Enter' || e.code === 'Space') {
+                    e.preventDefault();
+                    this.hideInstructionModal();
+                }
             });
         }
 
@@ -344,6 +448,14 @@ class EKYCApp {
             startCapture.addEventListener('click', () => {
                 this.startDocumentCapture();
             });
+            
+            // Keyboard support
+            startCapture.addEventListener('keydown', (e) => {
+                if (e.code === 'Enter' || e.code === 'Space') {
+                    e.preventDefault();
+                    this.startDocumentCapture();
+                }
+            });
         }
 
         // Camera controls
@@ -355,11 +467,27 @@ class EKYCApp {
             captureBtn.addEventListener('click', () => {
                 this.capturePhoto();
             });
+            
+            // Keyboard support
+            captureBtn.addEventListener('keydown', (e) => {
+                if (e.code === 'Enter' || e.code === 'Space') {
+                    e.preventDefault();
+                    this.capturePhoto();
+                }
+            });
         }
 
         if (uploadBtn) {
             uploadBtn.addEventListener('click', () => {
                 fileInput.click();
+            });
+            
+            // Keyboard support
+            uploadBtn.addEventListener('keydown', (e) => {
+                if (e.code === 'Enter' || e.code === 'Space') {
+                    e.preventDefault();
+                    fileInput.click();
+                }
             });
         }
 
@@ -375,6 +503,14 @@ class EKYCApp {
             faceCaptureBtn.addEventListener('click', () => {
                 this.captureFacePhoto();
             });
+            
+            // Keyboard support
+            faceCaptureBtn.addEventListener('keydown', (e) => {
+                if (e.code === 'Enter' || e.code === 'Space') {
+                    e.preventDefault();
+                    this.captureFacePhoto();
+                }
+            });
         }
 
         // Error close
@@ -382,6 +518,14 @@ class EKYCApp {
         if (errorClose) {
             errorClose.addEventListener('click', () => {
                 this.hideError();
+            });
+            
+            // Keyboard support
+            errorClose.addEventListener('keydown', (e) => {
+                if (e.code === 'Enter' || e.code === 'Space') {
+                    e.preventDefault();
+                    this.hideError();
+                }
             });
         }
 
@@ -392,7 +536,38 @@ class EKYCApp {
                 e.preventDefault();
                 this.showGuide();
             });
+            
+            // Keyboard support
+            guideLink.addEventListener('keydown', (e) => {
+                if (e.code === 'Enter' || e.code === 'Space') {
+                    e.preventDefault();
+                    this.showGuide();
+                }
+            });
         }
+        
+        // Global keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Escape key to close modals
+            if (e.code === 'Escape') {
+                const modal = document.getElementById('instructionModal');
+                const faceGuideModal = document.getElementById('faceGuideModal');
+                
+                if (modal && !modal.classList.contains('hidden')) {
+                    this.hideInstructionModal();
+                } else if (faceGuideModal && !faceGuideModal.classList.contains('hidden')) {
+                    this.hideFaceGuideModal();
+                }
+            }
+        });
+    }
+
+    // Update card selection for accessibility
+    updateCardSelection(selectedCard) {
+        const docCards = document.querySelectorAll('.doc-card');
+        docCards.forEach(card => {
+            card.setAttribute('aria-checked', card === selectedCard);
+        });
     }
 
     updateLanguage() {
@@ -497,7 +672,13 @@ class EKYCApp {
     async initializeCamera() {
         try {
             const videoElement = document.getElementById('videoElement');
-            if (!videoElement) return;
+            if (!videoElement) {
+                throw new Error('Video element not found');
+            }
+
+            // Show loading state for camera
+            this.showLoading(true);
+            this.updateLoadingText(this.translations[this.currentLanguage].cameraInstructions);
 
             const constraints = {
                 video: {
@@ -507,15 +688,25 @@ class EKYCApp {
                 }
             };
 
+            if (this.debugMode) {
+                console.log('Requesting camera access with constraints:', constraints);
+            }
+
             this.cameraStream = await navigator.mediaDevices.getUserMedia(constraints);
             videoElement.srcObject = this.cameraStream;
             
             videoElement.addEventListener('loadedmetadata', () => {
                 videoElement.play();
+                this.showLoading(false);
             });
+
+            if (this.debugMode) {
+                console.log('Camera initialized successfully');
+            }
 
         } catch (error) {
             console.error('Camera initialization error:', error);
+            this.showLoading(false);
             this.handleFaceAuthError(error);
         }
     }
@@ -556,9 +747,16 @@ class EKYCApp {
         if (!file) return;
 
         try {
+            // Validate file before processing
+            this.validateImageFile(file);
+            
+            // Compress image to optimize size
+            const compressedFile = await this.compressImage(file);
+            
             this.capturedImages.push({
                 step: this.currentStep,
-                file: file,
+                file: compressedFile,
+                originalFile: file,
                 timestamp: Date.now()
             });
             
@@ -566,8 +764,78 @@ class EKYCApp {
             this.nextStep();
         } catch (error) {
             console.error('File upload error:', error);
-            this.showError('Lỗi khi tải ảnh lên. Vui lòng thử lại.');
+            this.showError(`Lỗi khi tải ảnh lên: ${error.message}`);
         }
+    }
+
+    // Validate image file type and size
+    validateImageFile(file) {
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+        const maxSize = 10 * 1024 * 1024; // 10MB
+        
+        if (!allowedTypes.includes(file.type)) {
+            throw new Error(this.currentLanguage === 'vi' ? 
+                'Định dạng file không được hỗ trợ. Vui lòng chọn file JPG, PNG hoặc WebP.' : 
+                'File format not supported. Please select JPG, PNG, or WebP file.');
+        }
+        
+        if (file.size > maxSize) {
+            throw new Error(this.currentLanguage === 'vi' ? 
+                'File quá lớn (tối đa 10MB). Vui lòng chọn file nhỏ hơn.' : 
+                'File too large (maximum 10MB). Please select a smaller file.');
+        }
+        
+        return true;
+    }
+
+    // Compress image to optimize size
+    compressImage(file, maxWidth = 1024, quality = 0.8) {
+        return new Promise((resolve, reject) => {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+            
+            img.onload = () => {
+                // Calculate new dimensions maintaining aspect ratio
+                const ratio = Math.min(maxWidth / img.width, maxWidth / img.height);
+                const width = img.width * ratio;
+                const height = img.height * ratio;
+                
+                canvas.width = width;
+                canvas.height = height;
+                
+                // Draw image on canvas
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                // Convert to blob
+                canvas.toBlob((blob) => {
+                    if (blob) {
+                        // Create a new file with compressed data
+                        const compressedFile = new File([blob], file.name, {
+                            type: file.type,
+                            lastModified: Date.now()
+                        });
+                        resolve(compressedFile);
+                    } else {
+                        reject(new Error('Image compression failed'));
+                    }
+                }, file.type, quality);
+            };
+            
+            img.onerror = () => {
+                reject(new Error('Failed to load image for compression'));
+            };
+            
+            // Load image from file
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                img.src = e.target.result;
+            };
+            reader.onerror = () => {
+                reject(new Error('Failed to read image file'));
+            };
+            reader.readAsDataURL(file);
+        });
     }
 
     nextStep() {
@@ -612,7 +880,13 @@ class EKYCApp {
     async initializeFaceCamera() {
         try {
             const faceVideoElement = document.getElementById('faceVideoElement');
-            if (!faceVideoElement) return;
+            if (!faceVideoElement) {
+                throw new Error('Face video element not found');
+            }
+
+            // Show loading state for face camera
+            this.showLoading(true);
+            this.updateLoadingText(this.translations[this.currentLanguage].loadingText);
 
             const constraints = {
                 video: {
@@ -623,15 +897,25 @@ class EKYCApp {
                 }
             };
 
+            if (this.debugMode) {
+                console.log('Requesting face camera access with constraints:', constraints);
+            }
+
             this.cameraStream = await navigator.mediaDevices.getUserMedia(constraints);
             faceVideoElement.srcObject = this.cameraStream;
             
             faceVideoElement.addEventListener('loadedmetadata', () => {
                 faceVideoElement.play();
+                this.showLoading(false);
             });
+
+            if (this.debugMode) {
+                console.log('Face camera initialized successfully');
+            }
 
         } catch (error) {
             console.error('Face camera initialization error:', error);
+            this.showLoading(false);
             this.handleFaceAuthError(error);
         }
     }
@@ -639,31 +923,145 @@ class EKYCApp {
     async loadFaceDetectionModels() {
         try {
             this.showLoading(true);
+            this.updateLoadingText(this.translations[this.currentLanguage].loadingText);
+            this.updateLoadingProgress(0, this.translations[this.currentLanguage].loadingText);
             
-            // 7. Debug Steps - Bật debug mode
-            const config = {
-                debug: this.debugMode,
-                modelPath: './models',
-                loadTimeout: 30000
-            };
-
             if (this.debugMode) {
-                console.log('Loading face detection models with config:', config);
+                console.log('Loading face detection models from local directory');
             }
             
-            // Load face-api.js models from your existing model files
-            await faceapi.nets.tinyFaceDetector.loadFromUri('./models');
-            await faceapi.nets.faceLandmark68Net.loadFromUri('./models');
-            await faceapi.nets.faceRecognitionNet.loadFromUri('./models');
-            await faceapi.nets.faceExpressionNet.loadFromUri('./models');
+            // Load models from local directory
+            await this.loadModelsFromLocal();
             
-            if (this.debugMode) console.log('Face detection models loaded successfully');
+            if (this.debugMode) console.log('All face detection models loaded successfully');
+            this.updateLoadingText('Models loaded successfully!');
+            this.updateLoadingProgress(100, 'Complete');
+            this.showSuccess('Models loaded successfully!');
             
         } catch (error) {
             console.error('Model loading error:', error);
-            this.showError(this.translations[this.currentLanguage].modelLoadError);
+            this.showError(`Model loading failed: ${error.message}. Please check your model files and try again.`);
+            
+            // Enable fallback mode
+            this.enableFallbackMode();
         } finally {
-            this.showLoading(false);
+            // Keep loading overlay visible for a moment to show completion
+            setTimeout(() => {
+                this.showLoading(false);
+            }, 1000);
+        }
+    }
+
+    async loadModelsFromLocal() {
+        // Load face-api.js models with retry mechanism
+        const maxRetries = 3;
+        const models = [
+            { 
+                name: 'tinyFaceDetector', 
+                loader: () => faceapi.nets.tinyFaceDetector.loadFromUri('./models'),
+                description: 'Tiny Face Detector',
+                progress: 25
+            },
+            { 
+                name: 'faceLandmark68Net', 
+                loader: () => faceapi.nets.faceLandmark68Net.loadFromUri('./models'),
+                description: 'Face Landmark Detector',
+                progress: 50
+            },
+            { 
+                name: 'faceRecognitionNet', 
+                loader: () => faceapi.nets.faceRecognitionNet.loadFromUri('./models'),
+                description: 'Face Recognition',
+                progress: 75
+            },
+            { 
+                name: 'faceExpressionNet', 
+                loader: () => faceapi.nets.faceExpressionNet.loadFromUri('./models'),
+                description: 'Face Expression',
+                progress: 100
+            }
+        ];
+        
+            // Load each model with retry mechanism and timeout
+            for (let i = 0; i < models.length; i++) {
+                const model = models[i];
+                
+                await this.retryOperation(
+                    async () => {
+                        if (this.debugMode) {
+                            console.log(`Loading ${model.description} model from local...`);
+                        }
+                        
+                        this.updateLoadingText(`${this.translations[this.currentLanguage].loadingText} ${model.description}...`);
+                        await model.loader();
+                        
+                        // Update progress
+                        this.updateLoadingProgress(model.progress, `${model.description} loaded`);
+                        
+                        if (this.debugMode) {
+                            console.log(`${model.description} model loaded successfully from local`);
+                        }
+                    },
+                    maxRetries,
+                    1000,
+                    15000 // 15 second timeout
+                );
+            }
+    }
+
+    async loadModelsFromCDN() {
+        // Fallback to CDN if local models fail
+        const cdnBaseUrl = 'https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/weights';
+        const models = [
+            { 
+                name: 'tinyFaceDetector', 
+                loader: () => faceapi.nets.tinyFaceDetector.loadFromUri(cdnBaseUrl),
+                description: 'Tiny Face Detector',
+                progress: 25
+            },
+            { 
+                name: 'faceLandmark68Net', 
+                loader: () => faceapi.nets.faceLandmark68Net.loadFromUri(cdnBaseUrl),
+                description: 'Face Landmark Detector',
+                progress: 50
+            },
+            { 
+                name: 'faceRecognitionNet', 
+                loader: () => faceapi.nets.faceRecognitionNet.loadFromUri(cdnBaseUrl),
+                description: 'Face Recognition',
+                progress: 75
+            },
+            { 
+                name: 'faceExpressionNet', 
+                loader: () => faceapi.nets.faceExpressionNet.loadFromUri(cdnBaseUrl),
+                description: 'Face Expression',
+                progress: 100
+            }
+        ];
+        
+        // Load each model with retry mechanism
+        for (let i = 0; i < models.length; i++) {
+            const model = models[i];
+            
+            await this.retryOperation(
+                async () => {
+                    if (this.debugMode) {
+                        console.log(`Loading ${model.description} model from CDN...`);
+                    }
+                    
+                    this.updateLoadingText(`${this.translations[this.currentLanguage].loadingText} ${model.description}...`);
+                    await model.loader();
+                    
+                    // Update progress
+                    this.updateLoadingProgress(model.progress, `${model.description} loaded`);
+                    
+                    if (this.debugMode) {
+                        console.log(`${model.description} model loaded successfully from CDN`);
+                    }
+                },
+                3,
+                1000
+            );
         }
     }
 
@@ -870,6 +1268,53 @@ class EKYCApp {
                 loadingOverlay.classList.remove('hidden');
             } else {
                 loadingOverlay.classList.add('hidden');
+            }
+        }
+    }
+
+    updateLoadingText(text) {
+        const loadingText = document.getElementById('loadingText');
+        if (loadingText) {
+            loadingText.textContent = text;
+        }
+    }
+
+    updateLoadingProgress(percentage, text) {
+        const progressBar = document.getElementById('loadingProgressBar');
+        const progressText = document.getElementById('loadingProgressText');
+        
+        if (progressBar) {
+            progressBar.style.width = `${percentage}%`;
+        }
+        
+        if (progressText) {
+            progressText.textContent = text || `${Math.round(percentage)}%`;
+        }
+    }
+
+    // Retry mechanism for critical operations with timeout
+    async retryOperation(operation, maxRetries = 3, delay = 1000, timeout = 10000) {
+        for (let i = 0; i < maxRetries; i++) {
+            try {
+                // Add timeout to the operation
+                const result = await Promise.race([
+                    operation(),
+                    new Promise((_, reject) => 
+                        setTimeout(() => reject(new Error('Operation timeout')), timeout)
+                    )
+                ]);
+                return result;
+            } catch (error) {
+                if (this.debugMode) {
+                    console.warn(`Operation failed (attempt ${i + 1}):`, error);
+                }
+                
+                if (i === maxRetries - 1) {
+                    throw error;
+                }
+                
+                // Wait before retry with exponential backoff
+                await new Promise(resolve => setTimeout(resolve, delay * Math.pow(2, i)));
             }
         }
     }
