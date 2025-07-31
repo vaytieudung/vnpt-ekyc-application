@@ -1,0 +1,208 @@
+/* Updated Color Scheme */
+body {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
+}
+
+/* Card Styles */
+.doc-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    padding: 20px;
+}
+
+.doc-card {
+    background: #1e293b;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.doc-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+.doc-icon img {
+    width: 60px;
+    height: 60px;
+}
+
+/* Card Text */
+.doc-card span {
+    font-size: 18px;
+    font-weight: 500;
+    color: #f1f5f9;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin-bottom: 16px;
+    padding: 0 10px;
+}
+
+.input-label {
+    font-size: 14px;
+    color: #cbd5e1;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.input-field {
+    padding: 10px 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #64748b;
+    background-color: #1e293b;
+    color: #f1f5f9;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #334155;
+    border-top: 4px solid #00d4aa;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@media (max-width: 480px) {
+    .input-label {
+        font-size: 14px;
+    }
+
+    .capture-btn {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 16px;
+    }
+}
+
+.capture-btn:focus {
+    outline: 3px solid #00d4aa;
+    outline-offset: 2px;
+}
+
+/* Accessibility improvements for icons */
+.doc-icon img {
+    alt: attr(alt);
+}
+
+/* Card hover animation */
+.doc-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* General padding/margin adjustments */
+.container {
+    padding: 20px;
+}
+
+/* Capture Button */
+.capture-btn {
+    background-color: #00d4aa;
+    color: #ffffff;
+    border: none;
+    padding: 14px 20px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.capture-btn:hover {
+    background-color: #00b38a;
+    box-shadow: 0 4px 8px rgba(0, 179, 138, 0.6);
+}
+
+.capture-btn:active {
+    background-color: #009f87;
+}
+
+/* Capture Button Icon */
+.capture-btn .camera-icon {
+    font-size: 1.6rem;
+}
+
+/* Input Group */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin-bottom: 16px;
+}
+
+.input-label {
+    font-size: 14px;
+    color: #94a3b8;
+    margin-bottom: 6px;
+}
+
+.input-field {
+    padding: 10px 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    background-color: #1e293b;
+    color: #f1f5f9;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #1e293b;
+    border-top: 4px solid #00d4aa;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .doc-cards-container {
+        grid-template-columns: 1fr;
+        padding: 16px;
+        gap: 20px;
+    }
+
+    .capture-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .doc-card span {
+        font-size: 16px;
+    }
+
+    .input-label {
+        font-size: 13px;
+    }
+}
