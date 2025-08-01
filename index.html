@@ -19,7 +19,9 @@
   <link rel="stylesheet" href="css/combined-styles.css" />
 </head>
 <body class="bg-gray-50 flex flex-col h-full">
-  <main class="flex-grow w-full h-full">
+  <!-- Container for dynamic views -->
+  <div id="viewContainer" class="relative flex-grow w-full h-full">
+    <!-- The embedded demo iframe remains below if needed -->
     <iframe
       aria-label="Embedded Shinhan Finance Web SDK demo"
       class="w-full h-full border-0"
@@ -29,8 +31,8 @@
       title="Shinhan Finance Web SDK Demo iframe"
     ></iframe>
 
-    <!-- Face Capture View -->
-<section id="faceCaptureView" class="flex flex-col items-center justify-center bg-gray-900 text-white p-6 h-full">
+    <!-- Face Capture View (initially hidden) -->
+    <section id="faceCaptureView" class="fixed inset-0 flex flex-col items-center justify-center bg-gray-900 text-white p-6 z-50 hidden">
       <h2 id="faceCaptureTitle" class="text-2xl font-semibold mb-4" data-lang-key="face_liveness_title">Xác thực khuôn mặt</h2>
       <p id="faceCaptureSubtitle" class="mb-6" data-lang-key="face_liveness_subtitle">Vui lòng giữ khuôn mặt trong khung hình oval.</p>
       <video id="faceCameraVideo" autoplay muted playsinline class="rounded-full border-4 border-teal-500 w-72 h-72 object-cover mb-4"></video>
@@ -47,7 +49,16 @@
         <div class="liveness-step w-6 h-6 rounded-full bg-gray-600"></div>
       </div>
     </section>
-  </main>
+  </div>
+
+  <!-- Loading overlay -->
+  <div id="loadingOverlay" class="fixed inset-0 flex flex-col items-center justify-center bg-gray-800 bg-opacity-75 text-white z-60 hidden">
+    <div class="loading-text text-lg mb-4">Loading...</div>
+  </div>
+
+  <!-- Error message container -->
+  <div id="errorMessage" class="fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-600 text-white px-4 py-2 rounded z-60 hidden"></div>
+
   <script src="script.js"></script>
 </body>
 </html>
