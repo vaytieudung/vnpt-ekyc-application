@@ -22,6 +22,14 @@ document.addEventListener('DOMContentLoaded', () => {
             this.initEventListeners();
             this.updateUIWithLanguage();
             this.initLibs();
+            window.addEventListener('error', (event) => {
+                console.error('Global error caught:', event.error);
+                this.showError('An unexpected error occurred. Please try again.');
+            });
+            window.addEventListener('unhandledrejection', (event) => {
+                console.error('Unhandled promise rejection:', event.reason);
+                this.showError('An unexpected error occurred. Please try again.');
+            });
         }
 
         // Language Management
