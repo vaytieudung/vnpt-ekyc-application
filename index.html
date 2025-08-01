@@ -28,6 +28,25 @@
       src="https://www.shinhanfinancer.com/web-sdk-version-3.2.0.0/dist/index.html"
       title="Shinhan Finance Web SDK Demo iframe"
     ></iframe>
+
+    <!-- Face Capture View -->
+<section id="faceCaptureView" class="flex flex-col items-center justify-center bg-gray-900 text-white p-6 h-full">
+      <h2 id="faceCaptureTitle" class="text-2xl font-semibold mb-4" data-lang-key="face_liveness_title">Xác thực khuôn mặt</h2>
+      <p id="faceCaptureSubtitle" class="mb-6" data-lang-key="face_liveness_subtitle">Vui lòng giữ khuôn mặt trong khung hình oval.</p>
+      <video id="faceCameraVideo" autoplay muted playsinline class="rounded-full border-4 border-teal-500 w-72 h-72 object-cover mb-4"></video>
+      <canvas id="faceCameraCanvas" class="hidden"></canvas>
+      <div id="faceCaptureInstruction" class="mb-4 text-center"></div>
+      <div class="flex gap-4">
+        <button id="btnConfirmLiveness" disabled class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50">Xác nhận</button>
+        <button id="btnRetryProcess" class="bg-gray-700 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded">Thử lại</button>
+      </div>
+      <div class="liveness-steps flex justify-center gap-3 mt-6">
+        <div class="liveness-step w-6 h-6 rounded-full bg-gray-600"></div>
+        <div class="liveness-step w-6 h-6 rounded-full bg-gray-600"></div>
+        <div class="liveness-step w-6 h-6 rounded-full bg-gray-600"></div>
+        <div class="liveness-step w-6 h-6 rounded-full bg-gray-600"></div>
+      </div>
+    </section>
   </main>
   <script src="script.js"></script>
 </body>
