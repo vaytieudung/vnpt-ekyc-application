@@ -450,12 +450,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // View Management
         showView(viewName) {
-            Object.keys(this.dom).forEach(key => {
-                if (key.endsWith('View') && this.dom[key]) {
-                    this.dom[key].classList.add('hidden');
+            const viewIds = ["docSelectView", "captureView", "confirmView", "videoTutorialView", "faceCaptureView", "finalReviewView", "successView", "qrScannerModal"];
+            viewIds.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.classList.add('hidden');
                 }
             });
-
             if (this.dom[viewName]) {
                 this.dom[viewName].classList.remove('hidden');
                 this.state.currentView = viewName;
@@ -905,12 +906,18 @@ document.addEventListener('DOMContentLoaded', () => {
             this.state.livenessStep = 0;
             this.state.livenessCompleted = false;
             this.updateProgressBar(4);
-            
+
+            this.showLoading(this.languages[this.currentLang].loading_resources);
+
             try {
                 await this.initFaceCamera();
-                this.startLivenessCheck();
+                this.dom.faceCameraVideo.addEventListener('playing', () => {
+                    this.hideLoading();
+                }, { once: true });
+                await this.startLivenessCheck();
             } catch (error) {
                 console.error('Face camera initialization failed:', error);
+                this.hideLoading();
                 this.showError(this.languages[this.currentLang].error_no_face || 'Không phát hiện khuôn mặt. Vui lòng thử lại.');
             }
         }
@@ -1359,23 +1366,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // Loading and Error handling
         showLoading(message) {
             if (this.dom.loadingOverlay) {
-                this.dom.loadingOverlay.classList.remove('hidden');
-                const loadingText = this.dom.loadingOverlay.querySelector('.loading-text');
-                if (loadingText) {
-                    loadingText.textContent = message;
-                }
-                if (this.loadingAnimation) {
-                    this.loadingAnimation.play();
-                }
+                this.dom.loadingOverlay.querySelector('.loading-text').textContent = message;
+                this.dom.loadingOverlay.classList.add('visible');
             }
         }
 
         hideLoading() {
             if (this.dom.loadingOverlay) {
-                this.dom.loadingOverlay.classList.add('hidden');
-                if (this.loadingAnimation) {
-                    this.loadingAnimation.stop();
-                }
+                this.dom.loadingOverlay.classList.remove('visible');
             }
         }
 
@@ -1383,7 +1381,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (this.dom.errorMessage) {
                 this.dom.errorMessage.textContent = message;
                 this.dom.errorMessage.classList.add('visible');
-                
                 setTimeout(() => {
                     this.dom.errorMessage.classList.remove('visible');
                 }, this.config.ERROR_MESSAGE_TIMEOUT);
