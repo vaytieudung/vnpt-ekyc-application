@@ -932,6 +932,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } catch (error) {
                 console.error('Face camera access failed:', error);
+                this.showError('Không thể truy cập camera khuôn mặt. Vui lòng kiểm tra quyền và thử lại.');
                 throw error;
             }
         }
@@ -1280,7 +1281,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     this.startCapture();
                     break;
                 case 'faceCaptureView':
-                    this.showView('videoTutorialView');
+                    // Instead of hiding faceCaptureView, go back to confirmView or docSelectView
+                    this.showView('confirmView');
+                    this.updateStepper(this.languages[this.currentLang].stepper_step3);
                     break;
                 default:
                     this.showView('docSelectView');
