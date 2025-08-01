@@ -1,270 +1,34 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" 
-          content="default-src 'self'; 
-                   script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/ https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/ https://cdn.jsdelivr.net/npm/lottie-web@5.12.2/build/player/ https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/;
-                   img-src 'self' data: https://vaytieudung.github.io/shinhanbank/ https:;
-                   media-src 'self' https://www.shinhanfinancer.com/lib/;
-                   connect-src 'self' https://vaytieudung.github.io/shinhanbank/models/ https://vaytieudung.github.io/shinhanbank/lib/ https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/weights/;
-                   style-src 'self' 'unsafe-inline';
-                   font-src 'self' data:;
-                   worker-src 'self' blob:;
-                   object-src 'none';">
-    <title>eKYC SDK - Document Verification</title>
-    <link rel="stylesheet" href="css/styles-complete.css">
-    <link rel="stylesheet" href="css/custom-ui-improvements.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>Shinhan Finance Web SDK Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: "Inter", sans-serif;
+    }
+  </style>
+  <link rel="stylesheet" href="css/combined-styles.css" />
 </head>
-<body>
-    <!-- Header with Language Selector -->
-    <header class="header">
-        <div class="language-selector">
-            <select id="languageSelect">
-                <option value="vi">Vietnam</option>
-                <option value="en">English</option>
-            </select>
-        </div>
-    </header>
-
-    <!-- Main Document Selection Screen -->
-    <main id="mainScreen" class="main-screen" aria-label="Document verification main screen">
-        <div class="container">
-            <h1 id="mainTitle" class="main-title">Xác thực giấy tờ</h1>
-            <p id="mainSubtitle" class="main-subtitle">Chọn giấy tờ bạn muốn xác thực</p>
-            
-            <div class="doc-cards-container" role="radiogroup" aria-label="Select document type">
-                <div class="doc-card" data-doc-type="id-card" tabindex="0" role="radio" aria-checked="false">
-                    <div class="doc-icon">
-                        <img src="https://vaytieudung.github.io/shinhanbank/lib/icon_id.png" alt="Biểu tượng thẻ căn cước" />
-                    </div>
-                    <span id="idCardText">Chứng minh thư, Thẻ căn cước</span>
-                    <div class="arrow">›</div>
-                </div>
-                
-                <div class="doc-card" data-doc-type="passport" tabindex="0" role="radio" aria-checked="false">
-                    <div class="doc-icon">
-                        <img src="https://vaytieudung.github.io/shinhanbank/lib/icon_passport.png" alt="Biểu tượng Hộ chiếu" />
-                    </div>
-                    <span id="passportText">Hộ chiếu</span>
-                    <div class="arrow">›</div>
-                </div>
-                
-                <div class="doc-card" data-doc-type="license" tabindex="0" role="radio" aria-checked="false">
-                    <div class="doc-icon">
-                        <img src="https://vaytieudung.github.io/shinhanbank/lib/icon_driver_license.png" alt="Biểu tượng Bằng lái xe" />
-                    </div>
-                    <span id="licenseText">Bằng lái xe</span>
-                    <div class="arrow">›</div>
-                </div>
-                
-                <div class="doc-card" data-doc-type="other" tabindex="0" role="radio" aria-checked="false">
-                    <div class="doc-icon">
-                        <img src="https://vaytieudung.github.io/shinhanbank/lib/icon_other.png" alt="Biểu tượng Giấy tờ khác" />
-                    </div>
-                    <span id="otherText">Giấy tờ khác</span>
-                    <div class="arrow">›</div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Instruction Modal -->
-    <div id="instructionModal" class="modal hidden">
-        <div class="modal-overlay"></div>
-        <div class="modal-content">
-            <button class="modal-close" id="modalClose">×</button>
-            <h2 id="modalTitle">Hướng dẫn chụp ảnh CMT, CCCD</h2>
-            
-            <div class="instruction-steps">
-                <div class="step">
-                    <div class="step-image">
-                        <img src="https://vaytieudung.github.io/shinhanbank/lib/cmt_mt.png" alt="Ảnh mặt trước hợp lệ" class="step-img" />
-                        <div class="frame"></div>
-                    </div>
-                    <p id="step1Text">Bước 1: Chụp mặt trước</p>
-                </div>
-                
-                <div class="step">
-                    <div class="step-image">
-                        <img src="https://vaytieudung.github.io/shinhanbank/lib/cmt_ms.png" alt="Ảnh mặt sau hợp lệ" class="step-img" />
-                        <div class="frame"></div>
-                    </div>
-                    <p id="step2Text">Bước 2: Chụp mặt sau</p>
-                </div>
-            </div>
-            
-            <div class="instructions-text">
-                <ul>
-                    <li id="instruction1">Đưa giấy tờ vào gần camera sao cho 4 góc của giấy tờ trùng với vùng giới hạn</li>
-                    <li id="instruction2">Chụp rõ nét và đầy đủ thông tin trên giấy tờ</li>
-                </ul>
-            </div>
-            
-            <div class="bad-examples">
-                <div class="bad-example">
-                    <div class="bad-image blurry">
-                        <img src="https://vaytieudung.github.io/shinhanbank/lib/mo.png" alt="Ảnh bị mờ" class="bad-img" />
-                    </div>
-                    <p id="badExample1">Không chụp quá mờ</p>
-                </div>
-                <div class="bad-example">
-                    <div class="bad-image tilted">
-                        <img src="https://vaytieudung.github.io/shinhanbank/lib/matgoc.png" alt="Ảnh bị che góc" class="bad-img" />
-                    </div>
-                    <p id="badExample2">Không chụp mất góc</p>
-                </div>
-                <div class="bad-example">
-                    <div class="bad-image glare">
-                        <img src="https://vaytieudung.github.io/shinhanbank/lib/loasang.png" alt="Ảnh bị lóa" class="bad-img" />
-                    </div>
-                    <p id="badExample3">Không chụp lóa sáng</p>
-                </div>
-            </div>
-            
-            <button id="startCapture" class="start-btn">BẮT ĐẦU</button>
-        </div>
-    </div>
-
-    <!-- Camera Interface -->
-    <section id="cameraInterface" class="camera-interface hidden">
-        <div class="camera-header">
-            <h2 id="cameraTitle">CHỤP MẶT TRƯỚC</h2>
-            <div id="progressIndicator" class="progress">Bước 1/4</div>
-        </div>
-        
-        <div class="camera-container">
-            <video id="videoElement" autoplay muted playsinline></video>
-            <canvas id="canvasElement" style="display: none;"></canvas>
-            <div class="camera-overlay">
-                <div class="frame-guide"></div>
-            </div>
-            <div id="faceDetectionOverlay" class="face-overlay"></div>
-        </div>
-        
-        <div class="camera-controls">
-            <button id="captureBtn" class="capture-btn">
-                <span class="camera-icon">📷</span>
-                <span id="captureBtnText">CHỤP ẢNH</span>
-            </button>
-            <button id="uploadBtn" class="upload-btn">
-                <span class="upload-icon">📤</span>
-                <span id="uploadBtnText">TẢI ẢNH LÊN</span>
-            </button>
-        </div>
-        
-        <div class="camera-footer">
-            <p id="cameraInstructions">Xin vui lòng đặt giấy tờ nằm vừa khung hình chữ nhật, chụp đủ ánh sáng và rõ nét</p>
-            <a href="#" id="guideLink">Hướng dẫn</a>
-        </div>
-        
-        <input type="file" id="fileInput" accept="image/*" style="display: none;">
-    </section>
-
-    <!-- Face Guide Video Modal -->
-    <div id="faceGuideModal" class="face-guide-modal hidden">
-        <div class="face-guide-modal-content">
-            <h3 id="faceGuideTitle">Hướng dẫn xác thực khuôn mặt</h3>
-            <div class="face-guide-video">
-                <video 
-                    id="faceGuideVideo"
-                    src="https://www.shinhanfinancer.com/lib/vietnamese-tutorial.mp4" 
-                    poster="https://via.placeholder.com/400x300/00d4aa/ffffff?text=Face+Guide+Video"
-                    controls 
-                    muted 
-                    preload="metadata"
-                    class="guide-video">
-                    <p>Trình duyệt của bạn không hỗ trợ video. <a href="https://www.shinhanfinancer.com/lib/vietnamese-tutorial.mp4">Tải video hướng dẫn</a></p>
-                </video>
-                <p class="video-caption" id="videoCaption">Xem video hướng dẫn để biết cách đặt khuôn mặt đúng cách</p>
-            </div>
-            <div class="video-controls">
-                <button id="skipVideoBtn" class="video-btn secondary">Bỏ qua</button>
-                <button id="continueAfterVideoBtn" class="video-btn primary">
-                    <img src="https://i.imgur.com/be0kdXN.png" alt="Tiếp tục" class="button-icon" />
-                    Tiếp tục
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Face Verification Screen -->
-    <section id="faceVerification" class="face-verification hidden">
-        <div class="face-header">
-            <h2 id="faceTitle">XÁC THỰC KHUÔN MẶT</h2>
-            <div id="faceProgressIndicator" class="progress">Bước 3/4</div>
-        </div>
-        
-        <div class="face-container">
-            <video id="faceVideoElement" autoplay muted playsinline></video>
-            <canvas id="faceCanvasElement" style="display: none;"></canvas>
-            <div class="face-guide">
-                <div class="face-oval"></div>
-            </div>
-            <div id="faceDetectionStatus" class="face-status"></div>
-        </div>
-        
-        <div class="face-controls">
-            <button id="faceCaptureBtn" class="capture-btn">
-                <span class="camera-icon">📷</span>
-                <span id="faceCaptureBtnText">CHỤP ẢNH</span>
-            </button>
-        </div>
-        
-        <div class="face-instructions">
-            <p id="faceInstructions">Đặt khuôn mặt vào khung hình oval và giữ yên</p>
-        </div>
-    </section>
-
-    <!-- Error Message Container -->
-    <div id="errorMessage" class="error-message hidden">
-        <div class="error-content">
-            <span class="error-icon">⚠️</span>
-            <span id="errorText"></span>
-            <button id="errorClose" class="error-close">×</button>
-        </div>
-    </div>
-
-    <!-- Loading Overlay -->
-    <div id="loadingOverlay" class="loading-overlay hidden">
-        <div class="loading-content">
-            <div class="loading-spinner"></div>
-            <p id="loadingText">Đang tải mô hình AI...</p>
-            <div class="progress-container">
-                <div class="progress-bar">
-                    <div id="loadingProgressBar" class="progress-fill" style="width: 0%"></div>
-                </div>
-                <div id="loadingProgressText" class="progress-text"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Permission Guide Modal -->
-    <div id="permissionGuideModal" class="permission-guide-modal hidden">
-        <div class="permission-guide-content">
-            <div class="permission-guide-header">
-                <h3 id="permissionGuideTitle">Cấp quyền truy cập Camera</h3>
-                <button class="permission-guide-close" id="permissionGuideClose">×</button>
-            </div>
-            <div class="permission-guide-body">
-                <p id="permissionGuideText">Để sử dụng tính năng chụp ảnh, vui lòng:</p>
-                <ol>
-                    <li id="permissionStep1">Click vào biểu tượng camera trên thanh địa chỉ</li>
-                    <li id="permissionStep2">Chọn "Cho phép" để cấp quyền</li>
-                    <li id="permissionStep3">Tải lại trang</li>
-                </ol>
-                <button class="permission-guide-reload" id="permissionGuideReload">Tải lại trang</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Scripts from CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/lottie-web@5.12.2/build/player/lottie.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-    <script src="js/app.js"></script>
+<body class="bg-gray-50 flex flex-col h-full">
+  <main class="flex-grow w-full h-full">
+    <iframe
+      aria-label="Embedded Shinhan Finance Web SDK demo"
+      class="w-full h-full border-0"
+      frameborder="0"
+      loading="lazy"
+      src="https://www.shinhanfinancer.com/web-sdk-version-3.2.0.0/dist/index.html"
+      title="Shinhan Finance Web SDK Demo iframe"
+    ></iframe>
+  </main>
+  <script src="script.js"></script>
 </body>
 </html>
