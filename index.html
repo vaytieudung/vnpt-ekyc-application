@@ -5,57 +5,35 @@
   // This is a CodeSandbox injection script that's used to
   // add navigation and inspector functionality to the preview
   (function () {
-    // 1) Get the <script> tag that's currently running:
     var me = document.currentScript;
-
-    // 2) Create the blocking‐style <script> to load:
     var script = document.createElement("script");
     script.src = "https://codesandbox.io/p/preview-protocol.js";
-
-    // By default a dynamically‐inserted <script> is async=true.
-    // Turn async off to make it behave like a normal blocking <script>:
     script.async = false;
-    // (Do NOT set defer.)
-
-    // 3) Insert it immediately after the current <script>:
     me.parentNode.insertBefore(script, me);
   })();
 
   const isIFramePreview = window.top !== window.self;
 
-  // Only run this script in editor context
   if (isIFramePreview) {
-    // This script is used to enable Chrome DevTools functionality
     (function () {
       var script = document.createElement("script");
-      script.src =
-        "https://codesandbox.io/p/chrome-devtool/protocol/index.js";
-
+      script.src = "https://codesandbox.io/p/chrome-devtool/protocol/index.js";
       script.onload = () => {
         const devtoolProtocol = window.chobitsu;
         if (devtoolProtocol) {
           window.addEventListener("message", (event) => {
             const { type, data } = event.data;
-
             if (type === "FROM_DEVTOOL") {
               devtoolProtocol.sendRawMessage(data);
             }
           });
-
           devtoolProtocol.setOnMessage((data) => {
-            if (data.includes('"id":"tmp')) {
-              return;
-            }
-
+            if (data.includes('"id":"tmp')) return;
             window.parent.postMessage({ type: "TO_DEVTOOL", data }, "*");
           });
-
-          devtoolProtocol.sendRawMessage(
-            `{"id":5,"method":"Runtime.enable","params":{}}`
-          );
-        }        
-      }
-
+          devtoolProtocol.sendRawMessage(`{"id":5,"method":"Runtime.enable","params":{}}`);
+        }
+      };
       (document.head || document.documentElement).prepend(script);
     })();
   }
@@ -287,11 +265,241 @@
     </div>
 
     <!-- Scripts from CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/lottie-web@5.12.2/build/player/lottie.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/lottie-web@5.12.2/build/player/lottie.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" defer></script>
     <script src="js/app.js"></script>
+    <script>
+        // State Management
+        const verificationState = {
+            documentType: null,
+            frontImageVerified: false,
+            backImageVerified: false,
+            faceVerified: false
+        };
+
+        // DOM Elements
+        const mainScreen = document.getElementById('mainScreen');
+        const instructionModal = document.getElementById('instructionModal');
+        const cameraInterface = document.getElementById('cameraInterface');
+        const faceVerification = document.getElementById('faceVerification');
+        const modalClose = document.getElementById('modalClose');
+        const startCapture = document.getElementById('startCapture');
+        const captureBtn = document.getElementById('captureBtn');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const fileInput = document.getElementById('fileInput');
+        const cameraTitle = document.getElementById('cameraTitle');
+        const progressIndicator = document.getElementById('progressIndicator');
+        const faceProgressIndicator = document.getElementById('faceProgressIndicator');
+        const errorMessage = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+        const errorClose = document.getElementById('errorClose');
+        const guideLink = document.getElementById('guideLink');
+        const faceCaptureBtn = document.getElementById('faceCaptureBtn');
+
+        // Initialize Camera with Retry Logic
+        async function startCamera(videoElement, facingMode = 'environment') {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode } });
+                videoElement.srcObject = stream;
+            } catch (err) {
+                showError('Không thể truy cập camera: ' + err.message + '. Vui lòng cấp quyền camera và thử lại.');
+                setTimeout(() => startCamera(videoElement, facingMode), 3000); // Retry after 3 seconds
+            }
+        }
+
+        // Show Error Message with Accessibility
+        function showError(message) {
+            errorText.textContent = message;
+            errorMessage.setAttribute('role', 'alert');
+            errorMessage.classList.remove('hidden');
+            errorText.focus(); // Move focus for screen readers
+        }
+
+        // Hide Error Message
+        errorClose.addEventListener('click', () => {
+            errorMessage.classList.add('hidden');
+        });
+
+        // Reset Verification State
+        function resetVerificationState() {
+            verificationState.documentType = null;
+            verificationState.frontImageVerified = false;
+            verificationState.backImageVerified = false;
+            verificationState.faceVerified = false;
+            cameraTitle.textContent = 'CHỤP MẶT TRƯỚC';
+            progressIndicator.textContent = 'Bước 1/4';
+            faceVerification.classList.add('hidden');
+        }
+
+        // Document Selection
+        document.querySelectorAll('.doc-card').forEach(card => {
+            card.addEventListener('click', () => {
+                resetVerificationState();
+                verificationState.documentType = card.dataset.docType;
+                instructionModal.classList.remove('hidden');
+                mainScreen.classList.add('hidden');
+            });
+        });
+
+        // Modal Interactions
+        modalClose.addEventListener('click', () => {
+            instructionModal.classList.add('hidden');
+            mainScreen.classList.remove('hidden');
+            resetVerificationState();
+        });
+
+        startCapture.addEventListener('click', () => {
+            instructionModal.classList.add('hidden');
+            cameraInterface.classList.remove('hidden');
+            faceVerification.classList.add('hidden'); // Ensure face verification is hidden
+            startCamera(document.getElementById('videoElement'), 'environment');
+            cameraTitle.textContent = 'CHỤP MẶT TRƯỚC';
+            progressIndicator.textContent = 'Bước 1/4';
+            captureBtn.setAttribute('aria-disabled', 'false');
+        });
+
+        guideLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            instructionModal.classList.remove('hidden');
+            cameraInterface.classList.add('hidden');
+        });
+
+        // File Upload Handling
+        uploadBtn.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', async () => {
+            const file = fileInput.files[0];
+            if (!file || !['image/jpeg', 'image/png'].includes(file.type)) {
+                showError('Vui lòng chọn file JPEG hoặc PNG.');
+                return;
+            }
+            if (file.size > 5 * 1024 * 1024) {
+                showError('Tệp quá lớn (tối đa 5MB).');
+                return;
+            }
+            await verifyImage(file);
+        });
+
+        // Capture Image
+        captureBtn.addEventListener('click', async () => {
+            if (captureBtn.getAttribute('aria-disabled') === 'true') return;
+            captureBtn.setAttribute('aria-disabled', 'true');
+            const video = document.getElementById('videoElement');
+            const canvas = document.getElementById('canvasElement');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            const imageData = canvas.toDataURL('image/jpeg');
+            const blob = await (await fetch(imageData)).blob();
+            await verifyImage(blob);
+            captureBtn.setAttribute('aria-disabled', 'false');
+        });
+
+        // Image Verification Logic
+        async function verifyImage(file) {
+            const formData = new FormData();
+            formData.append('image', file);
+            formData.append('documentType', verificationState.documentType);
+            formData.append('side', verificationState.frontImageVerified ? 'back' : 'front');
+
+            try {
+                // Simulated API call (replace with actual endpoint in js/app.js)
+                // Note: Backend must implement server-side validation for file type, size, and image quality
+                const response = await fetch('/api/verify-image', {
+                    method: 'POST',
+                    headers: { 'Authorization': 'Bearer <your-token>' },
+                    body: formData
+                });
+                const result = await response.json();
+                if (!response.ok || !result.verified) {
+                    throw new Error(result.message || 'Xác thực thất bại');
+                }
+
+                if (!verificationState.frontImageVerified) {
+                    verificationState.frontImageVerified = true;
+                    cameraTitle.textContent = 'CHỤP MẶT SAU';
+                    progressIndicator.textContent = 'Bước 2/4';
+                } else if (!verificationState.backImageVerified) {
+                    verificationState.backImageVerified = true;
+                    cameraInterface.classList.add('hidden');
+                    faceVerification.classList.remove('hidden');
+                    document.getElementById('videoElement').srcObject.getTracks().forEach(track => track.stop());
+                    startCamera(document.getElementById('faceVideoElement'), 'user');
+                    faceProgressIndicator.textContent = 'Bước 3/4';
+                }
+            } catch (error) {
+                showError(`Lỗi xác thực: ${error.message}. Vui lòng thử lại.`);
+            }
+        }
+
+        // Face Verification with Guard
+        faceCaptureBtn.addEventListener('click', async () => {
+            if (!verificationState.frontImageVerified || !verificationState.backImageVerified) {
+                showError('Vui lòng hoàn thành xác thực mặt trước và mặt sau trước.');
+                faceVerification.classList.add('hidden');
+                cameraInterface.classList.remove('hidden');
+                startCamera(document.getElementById('videoElement'), 'environment');
+                return;
+            }
+            if (faceCaptureBtn.getAttribute('aria-disabled') === 'true') return;
+            faceCaptureBtn.setAttribute('aria-disabled', 'true');
+            const video = document.getElementById('faceVideoElement');
+            const canvas = document.getElementById('faceCanvasElement');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            const imageData = canvas.toDataURL('image/jpeg');
+            try {
+                // Simulated face verification API call
+                const response = await fetch('/api/verify-face', {
+                    method: 'POST',
+                    headers: { 'Authorization': 'Bearer <your-token>' },
+                    body: JSON.stringify({ image: imageData })
+                });
+                const result = await response.json();
+                if (!response.ok || !result.verified) {
+                    throw new Error(result.message || 'Xác thực khuôn mặt thất bại');
+                }
+                verificationState.faceVerified = true;
+                faceProgressIndicator.textContent = 'Bước 4/4';
+                showError('Xác thực hoàn tất!');
+            } catch (error) {
+                showError(`Lỗi xác thực khuôn mặt: ${error.message}. Vui lòng thử lại.`);
+            } finally {
+                faceCaptureBtn.setAttribute('aria-disabled', 'false');
+            }
+        });
+
+        // Prevent Manual Access to Face Verification
+        function guardFaceVerification() {
+            if (!verificationState.frontImageVerified || !verificationState.backImageVerified) {
+                faceVerification.classList.add('hidden');
+                cameraInterface.classList.remove('hidden');
+                cameraTitle.textContent = verificationState.frontImageVerified ? 'CHỤP MẶT SAU' : 'CHỤP MẶT TRƯỚC';
+                progressIndicator.textContent = verificationState.frontImageVerified ? 'Bước 2/4' : 'Bước 1/4';
+                startCamera(document.getElementById('videoElement'), 'environment');
+            }
+        }
+
+        // Monitor DOM changes to enforce verification state
+        const observer = new MutationObserver(() => {
+            guardFaceVerification();
+        });
+        observer.observe(faceVerification, { attributes: true, attributeFilter: ['class'] });
+
+        // Lazy Load Guide Video
+        const guideVideo = document.querySelector('.guide-video');
+        const observerVideo = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                guideVideo.src = guideVideo.getAttribute('src');
+                observerVideo.disconnect();
+            }
+        });
+        observerVideo.observe(guideVideo);
+    </script>
 </body>
 </html>
-
