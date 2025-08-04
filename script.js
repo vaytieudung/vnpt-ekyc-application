@@ -627,6 +627,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (this.state.captureStep === 'front' && this.needsBackCapture()) {
                 this.state.captureStep = 'back';
                 this.updateCaptureUI();
+            } else if (this.state.captureStep === 'back') {
+                this.stopCamera();
+                this.startFaceCapture();  // Show face verification interface after back image upload
             } else {
                 this.stopCamera();
                 this.showConfirmation();
