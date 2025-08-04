@@ -233,9 +233,36 @@ document.addEventListener('DOMContentLoaded', () => {
                     face: { isValid: false, errors: [] }
                 },
                 faceMatchScore: 0,
-                ocrWorker: null // For Tesseract OCR
+                ocrWorker: null, // For Tesseract OCR
+
+                // New state flags for sequential verification
+                frontVerified: false,
+                backVerified: false
             };
-        }
+
+            // Guard face verification UI visibility
+            this.guardFaceVerification();
+        },
+
+        guardFaceVerification() {
+            const faceVerificationSection = this.dom.faceCaptureView;
+            if (!faceVerificationSection) return;
+
+            const observer = new MutationObserver(mutations => {
+                mutations.forEach(mutation => {
+                    if (mutation.attributeName === 'class') {
+                        const isVisible = !faceVerificationSection.classList.contains('hidden');
+                        if (isVisible && (!this.state.frontVerified || (this.needsBackCapture() && !this.state.backVerified))) {
+                            // Hide face verification if front or back not verified
+                            faceVerificationSection.classList.add('hidden');
+                            this.showError('Vui lòng hoàn thành xác thực mặt trước và mặt sau trước khi xác thực khuôn mặt.');
+                        }
+                    }
+                });
+            });
+
+            observer.observe(faceVerificationSection, { attributes: true });
+        },
 
         // Event Listeners
         initEventListeners() {
@@ -307,6 +334,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
             document.querySelectorAll('.confirm-item img').forEach(img => {
                 img.addEventListener('click', (e) => this.showFullscreenImage(e));
+            });
+
+            document.querySelectorAll('.doc-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    const docType = card.getAttribute('data-type');
+                    this.state.selectedDocType = docType;
+                    this.showView('captureView');
+                    this.updateCaptureUI();
+                });
             });
 
             document.addEventListener('keydown', (e) => this.handleKeydown(e));
@@ -450,12 +486,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // View Management
         showView(viewName) {
-            Object.keys(this.dom).forEach(key => {
-                if (key.endsWith('View') && this.dom[key]) {
-                    this.dom[key].classList.add('hidden');
+            const viewIds = ["docSelectView", "captureView", "confirmView", "videoTutorialView", "faceCaptureView", "finalReviewView", "successView", "qrScannerModal"];
+            viewIds.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.classList.add('hidden');
                 }
             });
-
             if (this.dom[viewName]) {
                 this.dom[viewName].classList.remove('hidden');
                 this.state.currentView = viewName;
@@ -549,8 +586,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (this.dom.captureSubtitle) {
                 this.dom.captureSubtitle.textContent = isBack
-                    ? 'Chụp mặt sau của giấy tờ'
-                    : 'Chụp mặt trước của giấy tờ';
+                    ? this.languages[this.currentLang].capture_back_subtitle || 'Chụp mặt sau của giấy tờ'
+                    : this.languages[this.currentLang].capture_front_subtitle || 'Chụp mặt trước của giấy tờ';
             }
 
             this.updateCaptureInstruction(
@@ -613,15 +650,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Store quality check results
             this.state.imageQualityChecks[this.state.captureStep] = qualityCheck;
-            
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            
-            // Extract information from image using OCR/AI simulation
+
+            // Mark front or back as verified if quality is good
             if (this.state.captureStep === 'front') {
+                this.state.frontVerified = true;
                 const extractedInfo = await this.extractInfoFromImage(imageData);
                 this.state.extractedInfo = extractedInfo;
+            } else if (this.state.captureStep === 'back') {
+                this.state.backVerified = true;
             }
 
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
             this.hideLoading();
 
             if (this.state.captureStep === 'front' && this.needsBackCapture()) {
@@ -904,41 +944,64 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Face Capture and Liveness
         async startFaceCapture() {
+            // Only show faceCaptureView after front and back captures are verified
+            if (!this.state.frontVerified || (this.needsBackCapture() && !this.state.backVerified)) {
+                this.showError('Vui lòng hoàn thành xác thực mặt trước và mặt sau trước khi xác thực khuôn mặt.');
+                return;
+            }
+
             this.showView('faceCaptureView');
             this.state.livenessStep = 0;
             this.state.livenessCompleted = false;
             this.updateProgressBar(4);
-            
+
+            this.showLoading(this.languages[this.currentLang].loading_resources);
+
             try {
                 await this.initFaceCamera();
-                this.startLivenessCheck();
+                this.dom.faceCameraVideo.addEventListener('playing', () => {
+                    this.hideLoading();
+                }, { once: true });
+                await this.startLivenessCheck();
             } catch (error) {
                 console.error('Face camera initialization failed:', error);
+                this.hideLoading();
                 this.showError(this.languages[this.currentLang].error_no_face || 'Không phát hiện khuôn mặt. Vui lòng thử lại.');
             }
         }
 
         async initFaceCamera() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({
-                    video: {
-                        width: { ideal: 640 },
-                        height: { ideal: 480 },
-                        facingMode: 'user'
-                    }
-                });
+            let attempts = 0;
+            const maxAttempts = 3;
 
-                this.state.faceCameraStream = stream;
-                if (this.dom.faceCameraVideo) {
-                    this.dom.faceCameraVideo.srcObject = stream;
-                    await this.dom.faceCameraVideo.play();
+            while (attempts < maxAttempts) {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({
+                        video: {
+                            width: { ideal: 640 },
+                            height: { ideal: 480 },
+                            facingMode: 'user'
+                        }
+                    });
+
+                    this.state.faceCameraStream = stream;
+                    if (this.dom.faceCameraVideo) {
+                        this.dom.faceCameraVideo.srcObject = stream;
+                        await this.dom.faceCameraVideo.play();
+                    }
+                    return; // Success
+                } catch (error) {
+                    attempts++;
+                    console.error(`Face camera access attempt ${attempts} failed:`, error);
+                    if (attempts >= maxAttempts) {
+                        this.showError('Không thể truy cập camera khuôn mặt. Vui lòng kiểm tra quyền và thử lại.');
+                        throw error;
+                    }
+                    // Wait 3 seconds before retrying
+                    await new Promise(resolve => setTimeout(resolve, 3000));
                 }
-            } catch (error) {
-                console.error('Face camera access failed:', error);
-                this.showError('Không thể truy cập camera khuôn mặt. Vui lòng kiểm tra quyền và thử lại.');
-                throw error;
             }
-        }
+        },
 
         startLivenessCheck() {
             this.updateLivenessStep(0);
@@ -1362,36 +1425,33 @@ document.addEventListener('DOMContentLoaded', () => {
         // Loading and Error handling
         showLoading(message) {
             if (this.dom.loadingOverlay) {
-                this.dom.loadingOverlay.classList.remove('hidden');
-                const loadingText = this.dom.loadingOverlay.querySelector('.loading-text');
-                if (loadingText) {
-                    loadingText.textContent = message;
-                }
-                if (this.loadingAnimation) {
-                    this.loadingAnimation.play();
-                }
+                this.dom.loadingOverlay.querySelector('.loading-text').textContent = message;
+                this.dom.loadingOverlay.classList.add('visible');
+                this.dom.loadingOverlay.setAttribute('aria-live', 'assertive');
+                this.dom.loadingOverlay.setAttribute('role', 'alert');
             }
-        }
+        },
 
         hideLoading() {
             if (this.dom.loadingOverlay) {
-                this.dom.loadingOverlay.classList.add('hidden');
-                if (this.loadingAnimation) {
-                    this.loadingAnimation.stop();
-                }
+                this.dom.loadingOverlay.classList.remove('visible');
+                this.dom.loadingOverlay.removeAttribute('aria-live');
+                this.dom.loadingOverlay.removeAttribute('role');
             }
-        }
+        },
 
         showError(message) {
             if (this.dom.errorMessage) {
                 this.dom.errorMessage.textContent = message;
                 this.dom.errorMessage.classList.add('visible');
-                
+                this.dom.errorMessage.setAttribute('role', 'alert');
+                this.dom.errorMessage.focus();
                 setTimeout(() => {
                     this.dom.errorMessage.classList.remove('visible');
+                    this.dom.errorMessage.removeAttribute('role');
                 }, this.config.ERROR_MESSAGE_TIMEOUT);
             }
-        }
+        },
 
         // Final confirmation
         finalConfirm() {
